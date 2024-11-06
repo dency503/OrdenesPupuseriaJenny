@@ -20,7 +20,7 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <!-- Aqui irá la foto de la coca -->
+        <!-- Logo del restaurante -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="100dp"
             android:layout_height="100dp"
@@ -32,7 +32,7 @@
         </com.google.android.material.card.MaterialCardView>
 
 
-        <!-- TextView superior -->
+        <!-- Nombre del negocio -->
         <TextView
             android:id="@+id/txtTop"
             android:layout_width="match_parent"
@@ -44,7 +44,7 @@
             android:textSize="24sp"
             android:layout_marginTop="10dp" />
 
-        <!-- TextView inferior -->
+        <!-- Mensaje de Bienvenida -->
         <TextView
             android:id="@+id/txtMensaje"
             android:layout_width="match_parent"
@@ -63,14 +63,15 @@
         android:orientation="vertical"
         android:layout_marginBottom="16dp">
 
-        <!-- TextView -->
+        <!-- Menu -->
         <TextView
-            android:id="@+id/txtBotones"
+            android:id="@+id/txtMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Botones"
-            android:textSize="18sp"
-            android:textColor="@android:color/black"
+            android:text="Menú"
+            android:textSize="45sp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
             android:gravity="center" />
 
         <!-- Cuadrícula de botones -->
