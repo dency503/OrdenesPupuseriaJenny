@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Ordenes</string>
+    <string name="base_url">https://10.0.2.2:7207/</string>
 </resources>

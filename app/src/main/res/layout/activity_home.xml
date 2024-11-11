@@ -8,29 +8,26 @@
     android:orientation="vertical"
     tools:context=".ui.activity.HomeActivity"
     android:padding="0dp">
-    <!-- Aquí puedes agregar el contenido dentro de la tarjeta -->
 
-    <!-- Segundo Contenedor: TextView y botones en cuadrícula -->
-
+    <!-- Contenedor principal: Logo y mensaje de bienvenida -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="39dp"
-        android:background="@color/black"
+        android:background="@color/cardview_dark_background"
+        android:orientation="vertical"
         android:gravity="center"
-        android:orientation="vertical">
+        android:paddingTop="36dp"
+        android:layout_marginBottom="20dp">
 
         <!-- Logo del restaurante -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginEnd="8dp"
             app:cardBackgroundColor="@color/GrayLight"
             app:cardCornerRadius="55dp"
-            android:layout_marginTop="36dp">
-            <!-- Contenido aquí -->
+            android:layout_marginBottom="16dp">
+            <!-- Aquí puedes poner el contenido del logo -->
         </com.google.android.material.card.MaterialCardView>
-
 
         <!-- Nombre del negocio -->
         <TextView
@@ -42,7 +39,7 @@
             android:textColor="@android:color/white"
             android:textStyle="bold"
             android:textSize="24sp"
-            android:layout_marginTop="10dp" />
+            android:layout_marginBottom="8dp"/>
 
         <!-- Mensaje de Bienvenida -->
         <TextView
@@ -53,17 +50,17 @@
             android:text="Bienvenida/o"
             android:textColor="@android:color/white"
             android:textSize="16sp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="39dp"/>
+            android:layout_marginBottom="20dp"/>
     </LinearLayout>
 
+    <!-- Contenedor de Menú y botones -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginBottom="16dp">
 
-        <!-- Menu -->
+        <!-- Menú -->
         <TextView
             android:id="@+id/txtMenu"
             android:layout_width="match_parent"
@@ -72,69 +69,38 @@
             android:textSize="45sp"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            android:gravity="center" />
+            android:gravity="center"
+            android:layout_marginBottom="30dp"/>
 
         <!-- Cuadrícula de botones -->
         <GridLayout
+            android:id="@+id/gridLayoutCategorias"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:columnCount="2"
-        android:orientation="horizontal"
-        android:layout_marginTop="30dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginStart="30dp">
+            android:orientation="horizontal"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="10dp"
 
-        <!-- Botón Pupusas de maiz -->
-            <Button
-                android:id="@+id/btnPupusasMaiz"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
-                app:cornerRadius="20dp"
-                android:text="Pupudas de Maiz"
-                android:textSize="16sp"
-                android:backgroundTint="@color/Gray"
-                android:layout_marginStart="16dp" />
-            />
+            android:layout_gravity="center">
 
-        <!-- Botón 2 -->
-            <Button
-                android:id="@+id/btnPupusasArroz"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
-                app:cornerRadius="20dp"
-                android:text="Pupusas de Arroz"
-                android:textSize="16sp"
-                android:backgroundTint="@color/Gray"
-                android:layout_marginStart="16dp" />
-            />
+            <!-- Aquí se agregarán dinámicamente los botones de categorías -->
+        </GridLayout>
+    </LinearLayout>
 
-        <!-- Botón 3 -->
-            <Button
-                android:id="@+id/btnBebidas"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
-                app:cornerRadius="20dp"
-                android:text="Bebidas"
-                android:textSize="16sp"
-                android:backgroundTint="@color/Gray"
-                android:layout_marginStart="16dp" />
-            />
+    <!-- RecyclerView para mostrar categorías -->
+    <TextView
+        android:id="@+id/txtCategorias"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Categorías"
+        android:textSize="24sp"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"/>
 
-        <!-- Botón 4 -->
-        <Button
-            android:id="@+id/btnOrdenes"
-            android:layout_width="140dp"
-            android:layout_height="140dp"
-            app:cornerRadius="20dp"
-            android:text="Ordenes"
-            android:textSize="16sp"
-            android:backgroundTint="@color/Gray"
-            android:layout_marginStart="16dp" />
-            />
-
-    </GridLayout>
 
 </LinearLayout>
-
-
-    </LinearLayout>
