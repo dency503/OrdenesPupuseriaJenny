@@ -6,30 +6,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.activity.BebidaActivity"
-    android:padding="25dp">
+    android:padding="16dp"
+    android:layout_margin="8dp"
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center_horizontal">
+    tools:context=".ui.activity.BebidaActivity">
 
-
+    <!-- Título centralizado -->
     <TextView
         android:id="@+id/txtTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:gravity="center_vertical"
+        android:layout_gravity="center_horizontal"
         android:text="Bebidas"
         android:textColor="@android:color/white"
         android:textStyle="bold"
-        android:textSize="24sp" />
-</LinearLayout>
+        android:textSize="26sp"
+        android:paddingBottom="8dp" />
 
-
-    <!-- Contenedor horizontal para el buscador  -->
+    <!-- Contenedor horizontal para el buscador y botones -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,118 +35,48 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:outlineAmbientShadowColor="@color/black"
-            android:outlineSpotShadowColor="@color/black"
-            android:queryHint="Buscar bebida" />
+            android:queryHint="Buscar bebida"
 
-        <!-- Botones al lado del buscador -->
+            android:iconifiedByDefault="false" />
+
         <ImageButton
-            android:id="@+id/btnLista"
-            android:layout_width="50dp"
+        android:id="@+id/btnLista"
+        android:layout_width="50dp"
         android:layout_height="50dp"
         android:src="@drawable/lista"
-        android:tint="@android:color/darker_gray"
+
+            app:tint="@android:color/darker_gray"
         android:contentDescription="Ícono redondo"
         android:scaleType="centerInside"
         android:importantForAccessibility="yes" />
-
-
         <ImageButton
             android:id="@+id/btnCuadro"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/cuadro"
-            android:tint="@android:color/darker_gray"
+            app:tint="@android:color/darker_gray"
             android:contentDescription="Ícono redondo"
             android:scaleType="centerInside"
-            android:importantForAccessibility="yes" />
-    </LinearLayout>
+            android:importantForAccessibility="yes" /></LinearLayout>
 
-
-
+    <!-- CardView para cada bebida con imagen, nombre, precio y cantidad -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewBebidas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:scrollbars="vertical" />
+    <!-- Contenedor para el total de productos y botón de detalles -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="16dp">
-
-        <!-- Aqui irá la foto de la coca -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginEnd="8dp"
-            app:cardBackgroundColor="@color/GrayLight"
-            app:cardCornerRadius="35dp">
-            <!-- Contenido aquí -->
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Contenedor de la información de la bebida -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tvtBebida"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Bebida:"
-                android:textColor="@android:color/white" />
-
-            <TextView
-                android:id="@+id/tvtPrecio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Precio: "
-                android:textColor="@android:color/white" />
-        </LinearLayout>
-
-        <!-- Para los botones donde se subira la cantidad  -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginStart="16dp">
-
-            <Button
-                android:id="@+id/restarCantidad"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:text="-"
-                android:textSize="20sp"/>
-            <!-- textView para ver que se va agregando  -->
-            <TextView
-                android:id="@+id/cantidadBebida"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1"
-                android:textSize="18sp"
-                android:textColor="@color/black"
-                android:layout_marginHorizontal="16dp"/>
-
-            <Button
-                android:id="@+id/aumentarCantidad"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:text="+"
-                android:textSize="20sp"/>
-        </LinearLayout>
-    </LinearLayout>
-
-    <!-- Contenedor para total de productos y botón de detalles -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="16dp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:padding="8dp">
 
         <TextView
             android:id="@+id/txtCantidad"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Total de productos: 0"
             android:textSize="18sp"
@@ -164,9 +88,8 @@
             android:layout_height="wrap_content"
             android:text="Detalles"
             android:textSize="16sp"
-            android:layout_marginStart="16dp" />
+            android:backgroundTint="@color/cardview_dark_background"
+            android:textColor="@android:color/white" />
     </LinearLayout>
-
-
 
 </LinearLayout>

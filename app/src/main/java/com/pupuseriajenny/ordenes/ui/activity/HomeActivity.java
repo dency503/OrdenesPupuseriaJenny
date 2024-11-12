@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.Toast;
@@ -85,36 +87,33 @@ public class HomeActivity extends AppCompatActivity {
 
 
     private void agregarBotonesCategorias(CategoriaResponse categoriaResponse) {
-        // Limpiar el GridLayout antes de agregar los nuevos botones
+        // Limpiar el GridLayout antes de agregar los nuevos elementos
         gridLayoutCategorias.removeAllViews();
 
         // Obtener la lista de categorías desde el objeto CategoriaResponse
         List<String> categorias = categoriaResponse.getCategoria();
 
         if (categorias != null && !categorias.isEmpty()) {
+            LayoutInflater inflater = LayoutInflater.from(this);
+
             // Recorrer la lista de categorías
             for (String categoria : categorias) {
-                // Crear un botón para cada categoría
-                Button button = new Button(this);
-                button.setText(categoria); // Aquí usamos el nombre de la categoría
-                button.setTextSize(16);
-                button.setBackgroundTintList(getResources().getColorStateList(R.color.Gray));
-Toast.makeText(this,categoria,Toast.LENGTH_SHORT).show();
-                // Configurar el tamaño del botón
-                GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-                params.width = GridLayout.LayoutParams.MATCH_PARENT;
-                params.height = GridLayout.LayoutParams.WRAP_CONTENT;
-                params.setMargins(16, 16, 16, 16); // Márgenes alrededor del botón
-                button.setLayoutParams(params);
-
-                // Añadir el botón al GridLayout
-                gridLayoutCategorias.addView(button);
-
+                // Inflar un nuevo layout para cada categoría
+                View buttonLayout = inflater.inflate(R.layout.button_category, gridLayoutCategorias, false);
+                Button button = buttonLayout.findViewById(R.id.btnCategory);
+                button.setText(categoria);
+                Toast.makeText(HomeActivity.this, "Categoría seleccionada: " + categoria, Toast.LENGTH_SHORT).show();
                 // Configurar el clic del botón
                 button.setOnClickListener(v -> {
-                    // Manejo del clic en cada categoría, por ejemplo, abrir una nueva actividad
+                    // Manejo del clic en cada categoría
                     Toast.makeText(HomeActivity.this, "Categoría seleccionada: " + categoria, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(HomeActivity.this, BebidaActivity.class);
+                    intent.putExtra("categoria",categoria);
+                    startActivity(intent);
                 });
+
+                // Añadir el layout inflado al GridLayout
+                gridLayoutCategorias.addView(buttonLayout);
             }
         }
     }
