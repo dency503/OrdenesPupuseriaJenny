@@ -104,20 +104,22 @@
         android:padding="16dp">
 
         <Button
+            android:id="@+id/btnEnviar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Enviar orden"
             android:backgroundTint="@color/cardview_dark_background"
-            android:textColor="@android:color/white"
-            android:contentDescription="Botón para enviar la orden"/>
+            android:contentDescription="Botón para enviar la orden"
+            android:text="Enviar orden"
+            android:textColor="@android:color/white" />
 
         <Button
+            android:id="@+id/btnCancelar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cancelar orden"
             android:backgroundTint="@color/Gray"
-            android:textColor="@android:color/white"
-            android:contentDescription="Botón para cancelar la orden"/>
+            android:contentDescription="Botón para cancelar la orden"
+            android:text="Cancelar orden"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
 </LinearLayout>

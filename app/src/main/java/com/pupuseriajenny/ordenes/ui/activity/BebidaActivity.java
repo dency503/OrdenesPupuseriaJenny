@@ -17,11 +17,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.pupuseriajenny.ordenes.R;
 import com.pupuseriajenny.ordenes.data.model.Bebida;
 import com.pupuseriajenny.ordenes.ui.adapter.BebidaAdapter;
+import com.pupuseriajenny.ordenes.ui.listener.BebidaActionsListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BebidaActivity extends AppCompatActivity {
+public class BebidaActivity extends AppCompatActivity implements BebidaActionsListener {
     private List<Bebida> bebidasSeleccionadas = new ArrayList<>();
 
     // Declaración de vistas
@@ -83,9 +84,9 @@ btnDetalles.setOnClickListener(view -> {
 
         // Inicializar y llenar la lista de bebidas
         bebidaList = new ArrayList<>();
-        bebidaList.add(new Bebida("Coca-Cola", "$1.50", R.drawable.cuadro));
-        bebidaList.add(new Bebida("Pepsi", "$1.60", R.drawable.cuadro));
-        bebidaList.add(new Bebida("Fanta", "$1.40", R.drawable.cuadro));
+        bebidaList.add(new Bebida("Coca-Cola", 1.50, R.drawable.cuadro));
+        bebidaList.add(new Bebida("Pepsi", 1.60, R.drawable.cuadro));
+        bebidaList.add(new Bebida("Fanta", 1.40, R.drawable.cuadro));
 
         // Mostrar la cantidad total de productos
         txtCantidad.setText("Total de productos: " + bebidaList.size());

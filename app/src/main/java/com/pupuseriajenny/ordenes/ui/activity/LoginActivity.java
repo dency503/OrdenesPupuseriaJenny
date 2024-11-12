@@ -48,10 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         authService = RetrofitClient.getClient(baseUrl,null).create(AuthService.class);
         SharedPreferences prefs = getSharedPreferences("my_prefs", MODE_PRIVATE);
         String token = prefs.getString("jwt_token", null);
-if (token != null){
-    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-    finish();
-    startActivity(intent);}
+
      // Configurar el botón de inicio de sesión
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
