@@ -1,10 +1,11 @@
 package com.pupuseriajenny.ordenes.ui.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,39 +15,36 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.pupuseriajenny.ordenes.ApiService;
 import com.pupuseriajenny.ordenes.R;
-import com.pupuseriajenny.ordenes.data.model.Bebida;
+import com.pupuseriajenny.ordenes.RetrofitClient;
+import com.pupuseriajenny.ordenes.data.model.Producto;
 import com.pupuseriajenny.ordenes.ui.adapter.BebidaAdapter;
 import com.pupuseriajenny.ordenes.ui.listener.BebidaActionsListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class BebidaActivity extends AppCompatActivity implements BebidaActionsListener {
-    private List<Bebida> bebidasSeleccionadas = new ArrayList<>();
+    private List<Producto> bebidasSeleccionadas = new ArrayList<>();  // Lista para las bebidas seleccionadas
 
     // Declaración de vistas
     private TextView txtTitulo, txtCantidad;
     private RecyclerView recyclerView;
-
-    // Declaración de datos y adaptador
+    private Button btnDetalles;
     private BebidaAdapter bebidaAdapter;
-    private List<Bebida> bebidaList;
-private Button btnDetalles;
+    private List<Producto> productoList = new ArrayList<>();  // Lista de productos
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this); // Activar el modo EdgeToEdge
         setContentView(R.layout.activity_bebida); // Establecer el layout de la actividad
-btnDetalles = findViewById(R.id.btnDetalles);
-btnDetalles.setOnClickListener(view -> {
 
-    Intent intent = new Intent(BebidaActivity.this,OrdenActivity.class);
-    intent.putExtra("productoslista", (ArrayList<Bebida>) bebidasSeleccionadas);
-    startActivity(intent);
-
-    }
-);
         // Inicializar vistas
         initializeViews();
 
@@ -54,7 +52,58 @@ btnDetalles.setOnClickListener(view -> {
         setupBebidaList();
 
         // Configurar RecyclerView
-        setupRecyclerView();
+
+
+        // Recuperar el token desde SharedPreferences
+        SharedPreferences prefs = getSharedPreferences("my_prefs", MODE_PRIVATE);
+        String token = prefs.getString("jwt_token", null);
+
+        // Recuperar la categoría desde el Intent
+        Intent intent = getIntent();
+        String categoria = intent.getStringExtra("categoria");
+
+        if (categoria != null && token != null) {
+            ApiService apiService = RetrofitClient.getClient(getString(R.string.base_url), token).create(ApiService.class);
+
+            // Llamada para obtener los productos por categoría
+            Call<List<Producto>> call = apiService.obtenerProductosPorCategoria(categoria);
+
+            call.enqueue(new Callback<List<Producto>>() {
+                @Override
+                public void onResponse(Call<List<Producto>> call, Response<List<Producto>> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        productoList = response.body();
+
+                        // Inicializa el adaptador solo después de recibir los productos
+                        if (bebidaAdapter == null) {
+                            recyclerView.setLayoutManager(new LinearLayoutManager(BebidaActivity.this));
+                            bebidaAdapter = new BebidaAdapter(productoList, BebidaActivity.this); // Inicializa el adaptador aquí
+                            recyclerView.setAdapter(bebidaAdapter); // Asocia el adaptador al RecyclerView
+                        } else {
+                            bebidaAdapter.notifyDataSetChanged(); // Si el adaptador ya está inicializado, solo notifica cambios
+                        }
+
+                        // Mostrar la cantidad de productos
+                       txtCantidad.setText("Total de productos: " + productoList.size());
+                    } else {
+                        Toast.makeText(BebidaActivity.this, "No se encontraron productos", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+
+                @Override
+                public void onFailure(Call<List<Producto>> call, Throwable t) {
+                    Toast.makeText(BebidaActivity.this, "Error al cargar productos", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        // Configurar el botón de detalles
+        btnDetalles.setOnClickListener(view -> {
+            Intent intent2 = new Intent(BebidaActivity.this, OrdenActivity.class);
+            intent2.putExtra("productoslista", (ArrayList<Producto>) bebidasSeleccionadas);  // Se pasa la lista de productos seleccionados
+            startActivity(intent2);
+        });
 
         // Manejar los márgenes del sistema (barra de estado, navegación, etc.)
         handleSystemBarsInsets();
@@ -67,6 +116,7 @@ btnDetalles.setOnClickListener(view -> {
         txtTitulo = findViewById(R.id.txtTitulo);
         txtCantidad = findViewById(R.id.txtCantidad);
         recyclerView = findViewById(R.id.recyclerViewBebidas);
+        btnDetalles = findViewById(R.id.btnDetalles);
     }
 
     /**
@@ -74,38 +124,19 @@ btnDetalles.setOnClickListener(view -> {
      */
     private void setupBebidaList() {
         // Obtener la categoría pasada en el intent
-        Intent intent = getIntent();
-        String categoria = intent.getStringExtra("categoria");
 
-        // Establecer el título de la actividad
-        if (categoria != null) {
-            txtTitulo.setText(categoria);
-        }
-
-        // Inicializar y llenar la lista de bebidas
-        bebidaList = new ArrayList<>();
-        bebidaList.add(new Bebida("Coca-Cola", 1.50, R.drawable.cuadro));
-        bebidaList.add(new Bebida("Pepsi", 1.60, R.drawable.cuadro));
-        bebidaList.add(new Bebida("Fanta", 1.40, R.drawable.cuadro));
-
-        // Mostrar la cantidad total de productos
-        txtCantidad.setText("Total de productos: " + bebidaList.size());
     }
 
     /**
      * Configura el RecyclerView con el adaptador y el layout manager.
      */
-    private void setupRecyclerView() {
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        bebidaAdapter = new BebidaAdapter(bebidaList, this);
-        recyclerView.setAdapter(bebidaAdapter);
-    }
+
 
     /**
      * Método que se llama desde el adaptador para actualizar la lista de bebidas seleccionadas.
-     * @param bebida Bebida cuyo estado de cantidad ha cambiado.
+     * @param bebida Producto cuyo estado de cantidad ha cambiado.
      */
-    public void actualizarBebidasSeleccionadas(Bebida bebida) {
+    public void actualizarBebidasSeleccionadas(Producto bebida) {
         if (bebida.getCantidad() > 0) {
             if (!bebidasSeleccionadas.contains(bebida)) {
                 bebidasSeleccionadas.add(bebida);

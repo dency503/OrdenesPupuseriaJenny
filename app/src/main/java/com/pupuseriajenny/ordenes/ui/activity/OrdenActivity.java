@@ -1,7 +1,11 @@
 package com.pupuseriajenny.ordenes.ui.activity;
 
+
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -13,15 +17,23 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.pupuseriajenny.ordenes.ApiService;
 import com.pupuseriajenny.ordenes.R;
+import com.pupuseriajenny.ordenes.RetrofitClient;
 import com.pupuseriajenny.ordenes.data.model.Bebida;
+import com.pupuseriajenny.ordenes.data.model.Producto;
 import com.pupuseriajenny.ordenes.ui.adapter.BebidaAdapter;
 import com.pupuseriajenny.ordenes.ui.listener.BebidaActionsListener;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class OrdenActivity extends AppCompatActivity implements BebidaActionsListener {
-    private ArrayList<Bebida> bebidasSeleccionadas;
+    private ArrayList<Producto> bebidasSeleccionadas;
     private Button btnEnviar, btnCancelar;
     private TextView txtTotal;
     private RecyclerView recyclerView;
@@ -49,7 +61,7 @@ public class OrdenActivity extends AppCompatActivity implements BebidaActionsLis
 
         // Obtener la lista de bebidas seleccionadas
         if (intent != null && intent.hasExtra("productoslista")) {
-            bebidasSeleccionadas = (ArrayList<Bebida>) intent.getSerializableExtra("productoslista");
+            bebidasSeleccionadas = (ArrayList<Producto>) intent.getSerializableExtra("productoslista");
             if (bebidasSeleccionadas != null) {
                 setupRecyclerView();
                 actualizarTotal(); // Calcular el total al inicio
@@ -70,7 +82,7 @@ public class OrdenActivity extends AppCompatActivity implements BebidaActionsLis
     }
 
     @Override
-    public void actualizarBebidasSeleccionadas(Bebida bebida) {
+    public void actualizarBebidasSeleccionadas(Producto bebida) {
         actualizarTotal();
     }
 
@@ -80,9 +92,9 @@ public class OrdenActivity extends AppCompatActivity implements BebidaActionsLis
     private void actualizarTotal() {
         float total = 0;
 
-        for (Bebida bebida : bebidasSeleccionadas) {
+        for (Producto bebida : bebidasSeleccionadas) {
             if (bebida.getCantidad() > 0) {
-                double precio = bebida.getPrecio();
+                double precio = bebida.getPrecioProducto();
                 total += precio * bebida.getCantidad();
             }
         }

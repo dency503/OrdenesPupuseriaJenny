@@ -11,18 +11,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.pupuseriajenny.ordenes.R;
-import com.pupuseriajenny.ordenes.data.model.Bebida;
+import com.pupuseriajenny.ordenes.data.model.Producto;
 import com.pupuseriajenny.ordenes.ui.listener.BebidaActionsListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BebidaAdapter extends RecyclerView.Adapter<BebidaAdapter.BebidaViewHolder> {
 
-    private final List<Bebida> bebidaList;
+    private List<Producto> bebidaList;
     private final BebidaActionsListener actionsListener;
 
-    public BebidaAdapter(List<Bebida> bebidaList, BebidaActionsListener actionsListener) {
-        this.bebidaList = bebidaList;
+    public BebidaAdapter(List<Producto> bebidaList, BebidaActionsListener actionsListener) {
+        this.bebidaList = bebidaList; // Asegurarse de que la lista no sea null
         this.actionsListener = actionsListener;
     }
 
@@ -35,30 +36,39 @@ public class BebidaAdapter extends RecyclerView.Adapter<BebidaAdapter.BebidaView
 
     @Override
     public void onBindViewHolder(@NonNull BebidaViewHolder holder, int position) {
-        Bebida bebida = bebidaList.get(position);
-        holder.nombreBebida.setText(bebida.getNombre());
-        holder.precioBebida.setText("$"+bebida.getPrecio());
+         // Validar si la lista está vacía
+
+        Producto bebida = bebidaList.get(position);
+        holder.nombreBebida.setText(bebida.getNombreProducto());
+        holder.precioBebida.setText("$" + bebida.getPrecioProducto());
         holder.imagenBebida.setImageResource(bebida.getImagenResourceId());
         holder.cantidadBebida.setText(String.valueOf(bebida.getCantidad()));
 
+        // Acción para aumentar la cantidad
         holder.aumentarCantidad.setOnClickListener(v -> {
-            bebida.setCantidad(bebida.getCantidad() + 1);
-            holder.cantidadBebida.setText(String.valueOf(bebida.getCantidad()));
-            actionsListener.actualizarBebidasSeleccionadas(bebida);
+            bebida.setCantidad(bebida.getCantidad() + 1); // Aumentar cantidad
+            holder.cantidadBebida.setText(String.valueOf(bebida.getCantidad())); // Actualizar UI
+            actionsListener.actualizarBebidasSeleccionadas(bebida); // Notificar cambio
         });
 
+        // Acción para disminuir la cantidad
         holder.restarCantidad.setOnClickListener(v -> {
-            if (bebida.getCantidad() > 0) {
-                bebida.setCantidad(bebida.getCantidad() - 1);
-                holder.cantidadBebida.setText(String.valueOf(bebida.getCantidad()));
-                actionsListener.actualizarBebidasSeleccionadas(bebida);
+            if (bebida.getCantidad() > 0) { // Verificar que la cantidad no sea negativa
+                bebida.setCantidad(bebida.getCantidad() - 1); // Disminuir cantidad
+                holder.cantidadBebida.setText(String.valueOf(bebida.getCantidad())); // Actualizar UI
+                actionsListener.actualizarBebidasSeleccionadas(bebida); // Notificar cambio
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return bebidaList.size();
+        return bebidaList != null ? bebidaList.size() : 0; // Validar que la lista no sea null
+    }
+
+    public void actualizarLista(List<Producto> nuevaLista) {
+        this.bebidaList = nuevaLista != null ? nuevaLista : new ArrayList<>(); // Actualizar lista y evitar null
+        notifyDataSetChanged(); // Notificar que los datos han cambiado
     }
 
     public static class BebidaViewHolder extends RecyclerView.ViewHolder {

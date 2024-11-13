@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.pupuseriajenny.ordenes.CategoriaApiService;
+import com.pupuseriajenny.ordenes.ApiService;
 import com.pupuseriajenny.ordenes.DTOs.CategoriaResponse;
 import com.pupuseriajenny.ordenes.R;
 import com.pupuseriajenny.ordenes.RetrofitClient;
@@ -46,11 +46,10 @@ public class HomeActivity extends AppCompatActivity {
 
         if (token != null) {
             // Crear el servicio API
-            CategoriaApiService apiService = RetrofitClient.getClient(getString(R.string.base_url), token).create(CategoriaApiService.class);
+            ApiService apiService = RetrofitClient.getClient(getString(R.string.base_url), token).create(ApiService.class);
 
             // Llamada para obtener las categorías
             Call<CategoriaResponse> call = apiService.obtenerCategorias();
-
             call.enqueue(new Callback<CategoriaResponse>() {
                 @Override
                 public void onResponse(Call<CategoriaResponse> call, Response<CategoriaResponse> response) {
@@ -62,10 +61,23 @@ public class HomeActivity extends AppCompatActivity {
                             // Recorrer las categorías
                             agregarBotonesCategorias(categoriaResponse);
                             for (String categoria : categorias) {
-                                
                                 Log.d("Categoria", categoria);  // Esto debería imprimir "Bebidas" y "Pupusas"
                             }
                         }
+                    } else if (response.code() == 401) {
+                        // Token vencido o inválido
+                        Toast.makeText(HomeActivity.this, "Sesión expirada. Por favor, inicie sesión nuevamente.", Toast.LENGTH_SHORT).show();
+
+
+                        // Eliminar el token de SharedPreferences
+                        SharedPreferences prefs = getSharedPreferences("my_prefs", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.remove("jwt_token");
+                        editor.apply(); // Guardar los cambios
+
+                        Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
                     } else {
                         Toast.makeText(HomeActivity.this, "No se encontraron categorías", Toast.LENGTH_SHORT).show();
                     }
@@ -77,6 +89,7 @@ public class HomeActivity extends AppCompatActivity {
                     Log.e("HomeActivity", "Error en la llamada a la API", t);
                 }
             });
+
         } else {
             Toast.makeText(this, "Token no encontrado. Por favor, inicia sesión nuevamente.", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(HomeActivity.this, LoginActivity.class);

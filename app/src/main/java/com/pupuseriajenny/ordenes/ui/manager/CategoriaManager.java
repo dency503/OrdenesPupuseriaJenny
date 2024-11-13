@@ -8,14 +8,11 @@ import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.pupuseriajenny.ordenes.CategoriaApiService;
+import com.pupuseriajenny.ordenes.ApiService;
 import com.pupuseriajenny.ordenes.DTOs.CategoriaResponse;
 import com.pupuseriajenny.ordenes.R;
 import com.pupuseriajenny.ordenes.RetrofitClient;
 import com.pupuseriajenny.ordenes.ui.activity.BebidaActivity;
-import com.pupuseriajenny.ordenes.ui.activity.HomeActivity;
 
 import java.util.List;
 
@@ -38,8 +35,8 @@ public class CategoriaManager {
         String token = prefs.getString("jwt_token", null);
 
         if (token != null) {
-            CategoriaApiService apiService = RetrofitClient.getClient(context.getString(R.string.base_url), token)
-                    .create(CategoriaApiService.class);
+            ApiService apiService = RetrofitClient.getClient(context.getString(R.string.base_url), token)
+                    .create(ApiService.class);
 
             Call<CategoriaResponse> call = apiService.obtenerCategorias();
 
