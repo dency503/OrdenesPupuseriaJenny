@@ -16,6 +16,7 @@ import com.pupuseriajenny.ordenes.DTOs.LoginResponse;
 import com.pupuseriajenny.ordenes.R;
 import com.pupuseriajenny.ordenes.RetrofitClient;
 import com.pupuseriajenny.ordenes.data.service.AuthService;
+import com.pupuseriajenny.ordenes.utils.TokenUtil;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import retrofit2.Call;
@@ -38,18 +39,27 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        String baseUrl = getString(R.string.base_url);
+
         // Inicializar componentes de la interfaz
         edUser = findViewById(R.id.edUsuario);
         edPassword = findViewById(R.id.edPassword);
         btnLogin = findViewById(R.id.loginButton);
 
         // Crear instancia del servicio de autenticación
-        authService = RetrofitClient.getClient(baseUrl,null).create(AuthService.class);
-        SharedPreferences prefs = getSharedPreferences("my_prefs", MODE_PRIVATE);
-        String token = prefs.getString("jwt_token", null);
-if(token != null){Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-    startActivity(intent);}
+        authService = RetrofitClient.getClient(this).create(AuthService.class);
+
+        TokenUtil tokenUtil = new TokenUtil(this);
+
+        // Verificar si el token ya está guardado y redirigir si es necesario
+        if (tokenUtil.isTokenValid()) {
+            // Si el token existe, redirigir a la actividad principal
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish(); // Terminamos la actividad de login para evitar que el usuario regrese
+        } else {
+            // Si no existe el token, permanecemos en la pantalla de login
+            Toast.makeText(this, "No se encontró el token", Toast.LENGTH_SHORT).show();
+        }
      // Configurar el botón de inicio de sesión
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +87,7 @@ if(token != null){Intent intent = new Intent(LoginActivity.this, HomeActivity.cl
         try {
             LoginModel loginModel = new LoginModel(username, password);
             Call<LoginResponse> call = authService.login(loginModel);
-
+            TokenUtil tokenUtil = new TokenUtil(this);
             call.enqueue(new Callback<LoginResponse>() {
                 @Override
                 public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
@@ -88,10 +98,9 @@ if(token != null){Intent intent = new Intent(LoginActivity.this, HomeActivity.cl
                             Toast.makeText(LoginActivity.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
 
                             // Aquí podrías guardar el token para futuras solicitudes, por ejemplo en SharedPreferences
-                            SharedPreferences prefs = getSharedPreferences("my_prefs", MODE_PRIVATE);
-                            SharedPreferences.Editor editor = prefs.edit();
-                            editor.putString("jwt_token", token);
-                            editor.apply();
+
+                            tokenUtil.saveToken(token);
+
                             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                             startActivity(intent);
 

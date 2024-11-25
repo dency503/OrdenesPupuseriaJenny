@@ -45,6 +45,7 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.dotenv.java)
     implementation(libs.jwtdecode)
+    implementation(libs.security.crypto)
     annotationProcessor(libs.lombok)
 
     testImplementation(libs.junit)

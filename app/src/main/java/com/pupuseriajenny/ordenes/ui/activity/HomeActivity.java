@@ -46,7 +46,7 @@ public class HomeActivity extends AppCompatActivity {
 
         if (token != null) {
             // Crear el servicio API
-            ApiService apiService = RetrofitClient.getClient(getString(R.string.base_url), token).create(ApiService.class);
+            ApiService apiService = RetrofitClient.getClient(this).create(ApiService.class);
 
             // Llamada para obtener las categorías
             Call<CategoriaResponse> call = apiService.obtenerCategorias();

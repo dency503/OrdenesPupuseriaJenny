@@ -14,6 +14,7 @@ okhttp = "5.0.0-alpha.14"
 loggingInterceptor = "5.0.0-alpha.14"
 dotenvJava = "3.0.2"
 jwtdecode = "2.0.2"
+securityCrypto = "1.1.0-alpha06"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -30,6 +31,7 @@ okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhtt
 logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "loggingInterceptor" }
 dotenv-java = { group = "io.github.cdimascio", name = "dotenv-java", version.ref = "dotenvJava" }
 jwtdecode = { group = "com.auth0.android", name = "jwtdecode", version.ref = "jwtdecode" }
+security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "securityCrypto" }
 
 
 [plugins]

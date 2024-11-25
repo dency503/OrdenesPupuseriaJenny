@@ -26,6 +26,7 @@ import com.pupuseriajenny.ordenes.data.model.Venta;
 import com.pupuseriajenny.ordenes.ui.adapter.BebidaAdapter;
 import com.pupuseriajenny.ordenes.ui.listener.BebidaActionsListener;
 import com.pupuseriajenny.ordenes.utils.JWTUtil;
+import com.pupuseriajenny.ordenes.utils.TokenUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,8 +59,7 @@ public class OrdenActivity extends AppCompatActivity implements BebidaActionsLis
         recyclerView = findViewById(R.id.recyclerViewBebidas);
 
         // Obtener el token JWT y crear la instancia de ApiService
-        String token = getSharedPreferences("my_prefs", MODE_PRIVATE).getString("jwt_token", null);
-        apiService = RetrofitClient.getClient(getString(R.string.base_url), token).create(ApiService.class);
+         apiService = RetrofitClient.getClient(this).create(ApiService.class);
 
         // Configurar el botón de cancelar
         btnCancelar.setOnClickListener(view -> {
@@ -153,7 +153,8 @@ public class OrdenActivity extends AppCompatActivity implements BebidaActionsLis
         Venta nuevaVenta = new Venta();
         nuevaVenta.setIdDetalleVenta(idDetalle);
         nuevaVenta.setTotalVenta(totalVenta);
-        nuevaVenta.setIdEmpleado(JWTUtil.obtenerIdEmpleadoDesdeJWT(getSharedPreferences("my_prefs", MODE_PRIVATE).getString("jwt_token", null)));
+        TokenUtil tokenUtil = new TokenUtil(this);
+        nuevaVenta.setIdEmpleado(JWTUtil.obtenerIdEmpleadoDesdeJWT(tokenUtil.getToken()));
 
         // Llamada para crear la venta
         apiService.insertarVenta(nuevaVenta).enqueue(new Callback<Venta>() {

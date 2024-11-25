@@ -63,7 +63,7 @@ public class BebidaActivity extends AppCompatActivity implements BebidaActionsLi
         String categoria = intent.getStringExtra("categoria");
 
         if (categoria != null && token != null) {
-            ApiService apiService = RetrofitClient.getClient(getString(R.string.base_url), token).create(ApiService.class);
+            ApiService apiService = RetrofitClient.getClient(this).create(ApiService.class);
 
             // Llamada para obtener los productos por categoría
             Call<List<Producto>> call = apiService.obtenerProductosPorCategoria(categoria);

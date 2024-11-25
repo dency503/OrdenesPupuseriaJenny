@@ -35,7 +35,7 @@ public class CategoriaManager {
         String token = prefs.getString("jwt_token", null);
 
         if (token != null) {
-            ApiService apiService = RetrofitClient.getClient(context.getString(R.string.base_url), token)
+            ApiService apiService = RetrofitClient.getClient(context)
                     .create(ApiService.class);
 
             Call<CategoriaResponse> call = apiService.obtenerCategorias();

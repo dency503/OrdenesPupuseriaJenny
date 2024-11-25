@@ -1,5 +1,9 @@
 package com.pupuseriajenny.ordenes;
 
+import android.content.Context;
+
+import com.pupuseriajenny.ordenes.utils.TokenUtil;
+
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
@@ -19,7 +23,19 @@ public class RetrofitClient {
 
     private static Retrofit retrofit = null;
 
-    public static Retrofit getClient(String baseUrl, final String authToken) {
+    // Método que crea el cliente Retrofit con el token obtenido de SharedPreferences
+    public static Retrofit getClient(Context context ) {
+        // Crear una instancia de TokenUtil para obtener el token
+        TokenUtil tokenUtil = new TokenUtil(context);
+        String baseUrl = context.getString(R.string.base_url);
+        // Obtener el token almacenado
+        String authToken = tokenUtil.getToken();  // Obtener el token de EncryptedSharedPreferences
+
+        // Si el token es nulo, no proceder
+        if (authToken == null) {
+           // throw new IllegalStateException("El token JWT no está disponible.");
+        }
+
         // Crear un TrustManager que acepte todos los certificados (sin validación)
         TrustManager[] trustAllCertificates = new TrustManager[]{
                 new X509TrustManager() {
@@ -57,6 +73,7 @@ public class RetrofitClient {
             @Override
             public Response intercept(Chain chain) throws IOException {
                 Request original = chain.request();
+                // Agregar el token al encabezado de la solicitud
                 Request request = original.newBuilder()
                         .header("Authorization", "Bearer " + authToken)
                         .method(original.method(), original.body())
