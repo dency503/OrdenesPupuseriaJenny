@@ -44,6 +44,7 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
     implementation(libs.dotenv.java)
+    implementation(libs.jwtdecode)
     annotationProcessor(libs.lombok)
 
     testImplementation(libs.junit)

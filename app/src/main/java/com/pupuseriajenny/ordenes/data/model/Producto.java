@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class Producto implements Serializable {
-    private int id;
+    private int idProducto;
     private String nombreProducto;
     private double costoUnitarioProducto;
     private double precioProducto;
