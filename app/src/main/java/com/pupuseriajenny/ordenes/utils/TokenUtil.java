@@ -65,4 +65,14 @@ public class TokenUtil {
             return null;
         }
     }
+    public void removeToken() {
+        try {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.remove("jwt_token");  // Eliminamos el token
+            editor.apply();  // Aplicamos los cambios
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(context, "Error al eliminar el token", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

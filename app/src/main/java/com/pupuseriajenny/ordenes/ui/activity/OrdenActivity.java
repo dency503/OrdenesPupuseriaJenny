@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,13 +39,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class OrdenActivity extends AppCompatActivity implements BebidaActionsListener {
+    private Spinner spnTipoOrden ;
     private ArrayList<Producto> bebidasSeleccionadas;
     private Button btnEnviar, btnCancelar;
     private TextView txtTotal;
     private RecyclerView recyclerView;
     private float totalVenta;
     private BebidaAdapter bebidaAdapter;
-
+private EditText edtCliente;
+private EditText  edtMesa;
+private EditText edtComentario;
     private ApiService apiService;
 
     @Override
@@ -53,7 +58,11 @@ public class OrdenActivity extends AppCompatActivity implements BebidaActionsLis
         setContentView(R.layout.activity_orden);
 
         // Inicializar vistas
+        spnTipoOrden = findViewById(R.id.spnTipoOrden);
         btnEnviar = findViewById(R.id.btnEnviar);
+        edtComentario = findViewById(R.id.edtComentario);
+        edtMesa = findViewById(R.id.edtMesa);
+        edtCliente = findViewById(R.id.edtCliente);
         btnCancelar = findViewById(R.id.btnCancelar);
         txtTotal = findViewById(R.id.txtCantidad);
         recyclerView = findViewById(R.id.recyclerViewBebidas);
@@ -97,12 +106,31 @@ public class OrdenActivity extends AppCompatActivity implements BebidaActionsLis
 
     private void crearOrden() {
         RG_Orden orden = new RG_Orden();
-        orden.setIdMesa(1);  // Puede ser dinámico
-        orden.setClienteOrden("Cliente Ejemplo");
+
+
+        try {
+            // Convertir el texto a un entero
+            int idMesa = Integer.parseInt(edtMesa.getText().toString());
+
+            // Asignar el valor a la orden
+            orden.setIdMesa(idMesa);
+        } catch (NumberFormatException e) {
+            // Manejo de error si el texto no es un número válido
+            Toast.makeText(this, "Por favor ingresa un número válido para la mesa", Toast.LENGTH_SHORT).show();
+        } // Puede ser dinámico
+
+        String nombreCliente = edtCliente.getText().toString();
+
+        // Validar que el campo cliente no esté vacío
+        if (nombreCliente.isEmpty()) {
+            Toast.makeText(this, "Por favor ingresa el nombre del cliente", Toast.LENGTH_SHORT).show();
+            return;
+        }
         orden.setFechaOrden(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
-        orden.setTipoOrden("Comer en restaurante");
+        String tipoOrden = spnTipoOrden.getSelectedItem().toString();
+        orden.setTipoOrden(tipoOrden);
         orden.setEstadoOrden("Pendiente");
-        orden.setComentarioOrden("Comentario opcional");
+        orden.setComentarioOrden(edtComentario.getText().toString());
 
         // Llamada para crear la orden
         apiService.insertarOrden(orden).enqueue(new Callback<Integer>() {
@@ -146,7 +174,8 @@ public class OrdenActivity extends AppCompatActivity implements BebidaActionsLis
                     showToast("Error de red: " + t.getMessage());
                 }
             });
-        }
+        }Intent intent = new Intent(this,HomeActivity.class);
+        startActivity(intent);
     }
 
     private void crearVenta(int idDetalle) {

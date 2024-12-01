@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Ordenes</string>
     <string name="base_url">https://10.0.2.2:7207/</string>
+    <string-array name="tipo_orden">
+        <item>Comer en restaurante</item>
+        <item>Para llevar</item>
+        <item>Entrega a domicilio</item>
+    </string-array>
 </resources>

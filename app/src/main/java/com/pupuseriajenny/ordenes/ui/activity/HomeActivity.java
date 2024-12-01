@@ -16,6 +16,7 @@ import com.pupuseriajenny.ordenes.ApiService;
 import com.pupuseriajenny.ordenes.DTOs.CategoriaResponse;
 import com.pupuseriajenny.ordenes.R;
 import com.pupuseriajenny.ordenes.RetrofitClient;
+import com.pupuseriajenny.ordenes.utils.TokenUtil;
 
 import java.util.List;
 
@@ -48,6 +49,7 @@ public class HomeActivity extends AppCompatActivity {
             // Crear el servicio API
             ApiService apiService = RetrofitClient.getClient(this).create(ApiService.class);
 
+            TokenUtil tokenUtil = new TokenUtil(this);
             // Llamada para obtener las categorías
             Call<CategoriaResponse> call = apiService.obtenerCategorias();
             call.enqueue(new Callback<CategoriaResponse>() {
@@ -69,11 +71,7 @@ public class HomeActivity extends AppCompatActivity {
                         Toast.makeText(HomeActivity.this, "Sesión expirada. Por favor, inicie sesión nuevamente.", Toast.LENGTH_SHORT).show();
 
 
-                        // Eliminar el token de SharedPreferences
-                        SharedPreferences prefs = getSharedPreferences("my_prefs", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.remove("jwt_token");
-                        editor.apply(); // Guardar los cambios
+                        tokenUtil.removeToken();
 
                         Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
                         startActivity(intent);
@@ -115,8 +113,7 @@ public class HomeActivity extends AppCompatActivity {
                 View buttonLayout = inflater.inflate(R.layout.button_category, gridLayoutCategorias, false);
                 Button button = buttonLayout.findViewById(R.id.btnCategory);
                 button.setText(categoria);
-                Toast.makeText(HomeActivity.this, "Categoría seleccionada: " + categoria, Toast.LENGTH_SHORT).show();
-                // Configurar el clic del botón
+
                 button.setOnClickListener(v -> {
                     // Manejo del clic en cada categoría
                     Toast.makeText(HomeActivity.this, "Categoría seleccionada: " + categoria, Toast.LENGTH_SHORT).show();
