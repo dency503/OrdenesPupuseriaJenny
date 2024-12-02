@@ -2,6 +2,8 @@ package com.pupuseriajenny.ordenes.utils;
 
 import com.auth0.android.jwt.JWT;
 
+import java.util.Date;
+
 public class JWTUtil {
 
     // Método para obtener el idEmpleado desde el JWT
@@ -14,6 +16,16 @@ public class JWTUtil {
             // Si ocurre un error, capturamos la excepción y retornamos un valor predeterminado
             e.printStackTrace();
             return -1;  // Retornar -1 si no se puede obtener el ID
+        }
+    }public static Date obtenerFechaExpiracionDesdeJWT(String token) {
+        try {
+            JWT jwt = new JWT(token);  // Decodificamos el JWT
+            // Obtener la fecha de expiración (exp) como un objeto Date
+            long exp = jwt.getClaim("exp").asLong(); // El valor de "exp" es un timestamp en segundos
+            return new Date(exp * 1000);  // Convertir a milisegundos
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;  // Retornar null si no se puede obtener la fecha
         }
     }
 

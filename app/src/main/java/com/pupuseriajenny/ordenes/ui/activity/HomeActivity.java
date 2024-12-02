@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.pupuseriajenny.ordenes.ApiService;
+import com.pupuseriajenny.ordenes.AuthManager.AuthManager;
 import com.pupuseriajenny.ordenes.DTOs.CategoriaResponse;
 import com.pupuseriajenny.ordenes.R;
 import com.pupuseriajenny.ordenes.RetrofitClient;
@@ -27,7 +28,16 @@ import retrofit2.Response;
 public class HomeActivity extends AppCompatActivity {
 
     private GridLayout gridLayoutCategorias;
+    @Override
+    protected void onStart() {
+        super.onStart();
 
+        // Crear instancia de AuthManager
+        AuthManager authManager = new AuthManager(this);
+
+        // Verificar la expiración del token cuando la actividad se inicia
+        authManager.verificarExpiracionDelToken();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
