@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
         // Verificar si el token es válido al inicio
         if (tokenUtil.isTokenValid()) {
             // Si el token existe y es válido, redirigir a la actividad principal
-            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            Intent intent = new Intent(LoginActivity.this, HistorialActivity.class);
             startActivity(intent);
             finish(); // Terminamos la actividad de login para evitar que el usuario regrese
             return; // Salir de la función onCreate
@@ -97,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                     tokenUtil.saveToken(token);
 
                     // Redirigir a la actividad principal
-                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, HistorialActivity.class);
                     startActivity(intent);
                     finish(); // Terminamos la actividad de login para evitar que el usuario regrese
                 } else {

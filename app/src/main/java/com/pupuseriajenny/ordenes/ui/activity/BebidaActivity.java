@@ -21,6 +21,7 @@ import com.pupuseriajenny.ordenes.RetrofitClient;
 import com.pupuseriajenny.ordenes.data.model.Producto;
 import com.pupuseriajenny.ordenes.ui.adapter.BebidaAdapter;
 import com.pupuseriajenny.ordenes.ui.listener.BebidaActionsListener;
+import com.pupuseriajenny.ordenes.utils.TokenUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,14 +56,12 @@ public class BebidaActivity extends AppCompatActivity implements BebidaActionsLi
 
 
         // Recuperar el token desde SharedPreferences
-        SharedPreferences prefs = getSharedPreferences("my_prefs", MODE_PRIVATE);
-        String token = prefs.getString("jwt_token", null);
-
-        // Recuperar la categoría desde el Intent
+        TokenUtil tokenUtil = new TokenUtil(this);
+     // Recuperar la categoría desde el Intent
         Intent intent = getIntent();
         String categoria = intent.getStringExtra("categoria");
 
-        if (categoria != null && token != null) {
+        if (categoria != null && tokenUtil.getToken() != null) {
             ApiService apiService = RetrofitClient.getClient(this).create(ApiService.class);
 
             // Llamada para obtener los productos por categoría

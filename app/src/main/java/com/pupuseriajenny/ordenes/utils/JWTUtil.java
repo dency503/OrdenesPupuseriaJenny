@@ -27,6 +27,19 @@ public class JWTUtil {
             e.printStackTrace();
             return null;  // Retornar null si no se puede obtener la fecha
         }
+    }public static String obtenerNombre(String token) {
+        try {
+            JWT jwt = new JWT(token); // Decodificamos el JWT
+            String nombre = jwt.getClaim("nombreEmpleado").asString();
+            String apellido = jwt.getClaim("apellidoEmpleado").asString();
+            String cargo = jwt.getClaim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role").asString();
+
+            // Formatear la información
+            return String.format("Nombre completo: %s %s, Cargo: %s", nombre, apellido, cargo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Información no disponible"; // Manejo de error
+        }
     }
 
     // Método para obtener cualquier claim del JWT de manera reutilizable

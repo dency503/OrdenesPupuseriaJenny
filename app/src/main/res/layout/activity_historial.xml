@@ -34,6 +34,7 @@
             android:gravity="center_vertical">
 
             <TextView
+                android:id="@+id/tvUsuario"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Usuario:"
@@ -69,15 +70,7 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Órdenes tomadas"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:textStyle="normal"
-                    android:layout_gravity="start"
-                    android:layout_marginBottom="16dp" />
+                
 
                 <!-- RecyclerView para mostrar las órdenes -->
                 <androidx.recyclerview.widget.RecyclerView
@@ -97,28 +90,31 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/btnEditar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="@color/black"
             android:layout_margin="8dp"
-            android:text="Editar" />
+            android:layout_weight="1"
+            android:text="Editar"
+            android:textColor="@color/black" />
 
         <Button
+            android:id="@+id/btnEliminar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="@color/black"
             android:layout_margin="8dp"
-            android:text="Eliminar" />
+            android:layout_weight="1"
+            android:text="Eliminar"
+            android:textColor="@color/black" />
 
         <Button
+            android:id="@+id/btnNueva"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="@color/black"
             android:layout_margin="8dp"
-            android:text="Nueva" />
+            android:layout_weight="1"
+            android:text="Nueva"
+            android:textColor="@color/black" />
     </LinearLayout>
 
 </LinearLayout>

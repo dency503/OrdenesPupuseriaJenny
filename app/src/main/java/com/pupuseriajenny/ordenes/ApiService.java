@@ -27,7 +27,7 @@ public interface ApiService {
     // Insertar venta
     @POST("api/venta")
     Call<Venta> insertarVenta(@Body Venta venta);
-    @GET("ordenes")
+    @GET("/api/Orden/pendientes/con-mesa")
     Call<List<Orden>> obtenerOrdenes();
     // Insertar detalle de venta
     @POST("api/DetalleVenta")

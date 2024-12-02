@@ -17,6 +17,7 @@ import com.pupuseriajenny.ordenes.AuthManager.AuthManager;
 import com.pupuseriajenny.ordenes.DTOs.CategoriaResponse;
 import com.pupuseriajenny.ordenes.R;
 import com.pupuseriajenny.ordenes.RetrofitClient;
+import com.pupuseriajenny.ordenes.utils.JWTUtil;
 import com.pupuseriajenny.ordenes.utils.TokenUtil;
 
 import java.util.List;
@@ -52,14 +53,13 @@ public class HomeActivity extends AppCompatActivity {
 
     private void obtenerCategorias() {
         // Obtener el token de SharedPreferences (si es necesario para autenticar la solicitud)
-        SharedPreferences prefs = getSharedPreferences("my_prefs", MODE_PRIVATE);
-        String token = prefs.getString("jwt_token", null);
+        TokenUtil tokenUtil = new TokenUtil(this);
 
-        if (token != null) {
+        if (tokenUtil.isTokenValid()) {
             // Crear el servicio API
             ApiService apiService = RetrofitClient.getClient(this).create(ApiService.class);
 
-            TokenUtil tokenUtil = new TokenUtil(this);
+
             // Llamada para obtener las categorías
             Call<CategoriaResponse> call = apiService.obtenerCategorias();
             call.enqueue(new Callback<CategoriaResponse>() {

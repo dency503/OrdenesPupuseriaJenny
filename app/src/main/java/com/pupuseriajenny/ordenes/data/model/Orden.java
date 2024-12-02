@@ -8,10 +8,10 @@ import lombok.Setter;
 public class Orden {
     // Getters y setters
     private int idOrden;
-    private String nombreCliente;
+    private String clienteOrden;
     private String fechaOrden;
     private String tipoOrden;
-    private String estadoOrden;
+    private String estado;
     private String comentarioOrden;
 
 }
