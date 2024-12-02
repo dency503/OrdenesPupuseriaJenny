@@ -1,6 +1,7 @@
 package com.pupuseriajenny.ordenes;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.pupuseriajenny.ordenes.utils.TokenUtil;
 
@@ -27,7 +28,10 @@ public class RetrofitClient {
     public static Retrofit getClient(Context context ) {
         // Crear una instancia de TokenUtil para obtener el token
         TokenUtil tokenUtil = new TokenUtil(context);
-        String baseUrl = context.getString(R.string.base_url);
+
+        // Obtener la base URL desde SharedPreferences
+        SharedPreferences sharedPreferences = context.getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
+        String baseUrl = sharedPreferences.getString("API_URL", context.getString(R.string.base_url));
         // Obtener el token almacenado
         String authToken = tokenUtil.getToken();  // Obtener el token de EncryptedSharedPreferences
 

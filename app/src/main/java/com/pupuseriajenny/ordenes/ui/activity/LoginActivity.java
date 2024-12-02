@@ -28,14 +28,14 @@ public class LoginActivity extends AppCompatActivity {
 
     private AuthService authService;
     private EditText edUser, edPassword;
-    private Button btnLogin;
+    private Button btnLogin,btnConfig;
     private TokenUtil tokenUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+btnConfig = findViewById(R.id.btnConfig);
         // Inicializar componentes de la interfaz
         edUser = findViewById(R.id.edUsuario);
         edPassword = findViewById(R.id.edPassword);
@@ -64,7 +64,13 @@ public class LoginActivity extends AppCompatActivity {
             finish(); // Terminamos la actividad de login para evitar que el usuario regrese
             return; // Salir de la función onCreate
         }
-
+btnConfig.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        Intent intent = new Intent(LoginActivity.this,ConfiguracionActivity.class);
+        startActivity(intent);
+    }
+});
         // Configurar el botón de inicio de sesión
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override

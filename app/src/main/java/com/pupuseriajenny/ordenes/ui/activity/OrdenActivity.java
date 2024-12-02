@@ -72,7 +72,7 @@ private EditText edtComentario;
 
         // Configurar el botón de cancelar
         btnCancelar.setOnClickListener(view -> {
-            Intent intent = new Intent(this, HomeActivity.class);
+            Intent intent = new Intent(this, HistorialActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         });
@@ -174,7 +174,7 @@ private EditText edtComentario;
                     showToast("Error de red: " + t.getMessage());
                 }
             });
-        }Intent intent = new Intent(this,HomeActivity.class);
+        }Intent intent = new Intent(this,HistorialActivity.class);
         startActivity(intent);
     }
 
