@@ -96,7 +96,34 @@ public class HistorialActivity extends AppCompatActivity implements HistorialAda
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    // Implementación de la interfaz OnOrdenInteractionListener
+    // Método para cancelar una orden
+    public void cancelarOrden(Orden orden) {
+        // Primero, crear el objeto de la orden con el nuevo estado
+
+
+        orden.setEstadoOrden("Cancelada");  // Actualizamos el estado a "Cancelada"
+
+        // Llamamos al servicio API para actualizar el estado de la orden
+        apiService.actualizarEstadoOrden(orden.getIdOrden(), orden).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    showToast("Orden cancelada exitosamente");
+                    // Actualizar la lista de órdenes después de la cancelación
+                    obtenerOrdenes();
+                } else {
+                   tvUsuario.setText(response.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                showToast("Error de red: " + t.getMessage());
+            }
+        });
+    }
+
+    // Implementación de la interfaz OnOrdenInteractionListener para editar y eliminar órdenes
     @Override
     public void onEditarOrden(Orden orden) {
         // Lógica para editar la orden
@@ -111,9 +138,10 @@ public class HistorialActivity extends AppCompatActivity implements HistorialAda
                 .setTitle("Eliminar Orden")
                 .setMessage("¿Desea eliminar la orden de " + orden.getClienteOrden() + "?")
                 .setPositiveButton("Sí", (dialog, which) -> {
-                    // Eliminar la orden de la lista y notificar al adaptador
-                    listaOrdenes.remove(orden);
-                    historialAdapter.notifyDataSetChanged();
+
+                    // Llamar al método de cancelación de orden al eliminarla
+                    cancelarOrden(orden);
+                    obtenerOrdenes();
                 })
                 .setNegativeButton("No", null)
                 .show();

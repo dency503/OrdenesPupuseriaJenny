@@ -5,7 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.pupuseriajenny.ordenes.R;
@@ -13,39 +12,31 @@ import com.pupuseriajenny.ordenes.data.model.Orden;
 
 import java.util.List;
 
-public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.OrdenViewHolder> {
+public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.ViewHolder> {
 
     private List<Orden> ordenes;
-    private OnOrdenInteractionListener onOrdenInteractionListener;
+    private OnOrdenInteractionListener listener;
 
-    public HistorialAdapter(List<Orden> ordenes, OnOrdenInteractionListener onOrdenInteractionListener) {
+    public interface OnOrdenInteractionListener {
+        void onEditarOrden(Orden orden);
+        void onEliminarOrden(Orden orden);
+    }
+
+    public HistorialAdapter(List<Orden> ordenes, OnOrdenInteractionListener listener) {
         this.ordenes = ordenes;
-        this.onOrdenInteractionListener = onOrdenInteractionListener;
+        this.listener = listener;
     }
 
-    @NonNull
     @Override
-    public OrdenViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_historial_pedido, parent, false);
-        return new OrdenViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull OrdenViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         Orden orden = ordenes.get(position);
-        holder.nombreCliente.setText(orden.getClienteOrden());
-        holder.fechaOrden.setText(orden.getFechaOrden());
-        holder.tipoOrden.setText(orden.getTipoOrden());
-        holder.estadoOrden.setText(orden.getEstado());
-
-        // Listener para editar con un toque
-        holder.itemView.setOnClickListener(v -> onOrdenInteractionListener.onEditarOrden(orden));
-
-        // Listener para eliminar con un toque largo
-        holder.itemView.setOnLongClickListener(v -> {
-            onOrdenInteractionListener.onEliminarOrden(orden);
-            return true; // Retorna true para indicar que el evento se manejó
-        });
+        holder.bind(orden);
     }
 
     @Override
@@ -53,21 +44,41 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.Orde
         return ordenes.size();
     }
 
-    public static class OrdenViewHolder extends RecyclerView.ViewHolder {
-        TextView nombreCliente, fechaOrden, tipoOrden, estadoOrden;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        private TextView txtClienteOrden, txtFechaOrden, txtTipoOrden, txtEstadoOrden, txtComentarioOrden;
 
-        public OrdenViewHolder(@NonNull View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
-            nombreCliente = itemView.findViewById(R.id.nombreCliente);
-            fechaOrden = itemView.findViewById(R.id.fechaOrden);
-            tipoOrden = itemView.findViewById(R.id.tipoOrden);
-            estadoOrden = itemView.findViewById(R.id.estadoOrden);
-        }
-    }
+            txtClienteOrden = itemView.findViewById(R.id.nombreCliente);
+            txtFechaOrden = itemView.findViewById(R.id.fechaOrden);
+            txtTipoOrden = itemView.findViewById(R.id.tipoOrden);
+            txtEstadoOrden = itemView.findViewById(R.id.estadoOrden);
 
-    // Interface para manejar interacciones (editar y eliminar)
-    public interface OnOrdenInteractionListener {
-        void onEditarOrden(Orden orden); // Método para editar
-        void onEliminarOrden(Orden orden); // Método para eliminar
+
+            // Evento para editar (toque corto)
+            itemView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    listener.onEditarOrden(ordenes.get(position));
+                }
+            });
+
+            // Evento para eliminar (mantener presionado)
+            itemView.setOnLongClickListener(v -> {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    listener.onEliminarOrden(ordenes.get(position));
+                }
+                return true; // Retorna true para indicar que el evento fue manejado
+            });
+        }
+
+        public void bind(Orden orden) {
+            txtClienteOrden.setText(orden.getClienteOrden());
+            txtFechaOrden.setText(orden.getFechaOrden());
+            txtTipoOrden.setText(orden.getTipoOrden());
+            txtEstadoOrden.setText(orden.getEstadoOrden());
+
+        }
     }
 }

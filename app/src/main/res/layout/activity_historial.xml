@@ -70,7 +70,7 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                
+
 
                 <!-- RecyclerView para mostrar las órdenes -->
                 <androidx.recyclerview.widget.RecyclerView
@@ -88,24 +88,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btnEditar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:layout_weight="1"
-            android:text="Editar"
-            android:textColor="@color/black" />
-
-        <Button
-            android:id="@+id/btnEliminar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:layout_weight="1"
-            android:text="Eliminar"
-            android:textColor="@color/black" />
 
         <Button
             android:id="@+id/btnNueva"

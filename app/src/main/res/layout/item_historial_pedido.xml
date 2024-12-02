@@ -6,7 +6,11 @@
     android:orientation="vertical"
     android:background="@color/white"
     >
-
+    <TextView
+        android:id="@+id/idOrden"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nombre del cliente" />
     <TextView
         android:id="@+id/nombreCliente"
         android:layout_width="wrap_content"

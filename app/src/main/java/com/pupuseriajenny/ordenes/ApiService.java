@@ -13,9 +13,11 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface ApiService {
@@ -26,6 +28,15 @@ public interface ApiService {
 
     // Insertar venta
     @POST("api/venta")
+    @DELETE("/api/DetalleVenta/{id}")
+    Call<Void> eliminarDetalleVenta(@Path("id") int id);
+    @PUT("/api/Orden/{id}")
+    Call<Void> actualizarEstadoOrden(@Path("id") int idOrden, @Body Orden orden);
+    @DELETE("/api/Venta/{id}")
+    Call<Void> eliminarVenta(@Path("id") int id);
+
+    @DELETE("/api/Orden/{id}")
+    Call<Void> eliminarOrden(@Path("id") int id);
     Call<Venta> insertarVenta(@Body Venta venta);
     @GET("/api/Orden/pendientes/con-mesa")
     Call<List<Orden>> obtenerOrdenes();
