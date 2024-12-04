@@ -127,16 +127,25 @@ public class HistorialActivity extends AppCompatActivity implements HistorialAda
     @Override
     public void onEditarOrden(Orden orden) {
         // Lógica para editar la orden
-        Toast.makeText(this, "Editar orden de: " + orden.getClienteOrden(), Toast.LENGTH_SHORT).show();
-        // Aquí puedes abrir un diálogo o una nueva actividad para editar la orden
+        //Toast.makeText(this, "Editar orden de: " + orden.getClienteOrden(), Toast.LENGTH_SHORT).show();
+        // Diálogo de confirmación para eliminar
+        new AlertDialog.Builder(this)
+                .setTitle("Editar Orden")
+                .setMessage("¿Desea editar la orden de " + orden.getClienteOrden() + "?")
+                .setPositiveButton("Sí", (dialog, which) -> {
+
+
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 
     @Override
     public void onEliminarOrden(Orden orden) {
         // Diálogo de confirmación para eliminar
         new AlertDialog.Builder(this)
-                .setTitle("Eliminar Orden")
-                .setMessage("¿Desea eliminar la orden de " + orden.getClienteOrden() + "?")
+                .setTitle("Cancelar Orden")
+                .setMessage("¿Desea cancelar la orden de " + orden.getClienteOrden() + "?")
                 .setPositiveButton("Sí", (dialog, which) -> {
 
                     // Llamar al método de cancelación de orden al eliminarla
