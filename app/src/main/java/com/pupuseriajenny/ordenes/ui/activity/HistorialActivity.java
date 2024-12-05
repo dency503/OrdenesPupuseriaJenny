@@ -127,6 +127,12 @@ public class HistorialActivity extends AppCompatActivity implements HistorialAda
     @Override
     public void onEditarOrden(Orden orden) {
         // Lógica para editar la orden
+
+        // Recibir el ID de la orden y abrir la actividad de edición
+        Intent intent = new Intent(this, EditarOrdenActivity.class);
+        intent.putExtra("ID_ORDEN", orden.getIdOrden());  // Pasar el ID de la orden
+        startActivity(intent);
+
         //Toast.makeText(this, "Editar orden de: " + orden.getClienteOrden(), Toast.LENGTH_SHORT).show();
         // Diálogo de confirmación para eliminar
         new AlertDialog.Builder(this)

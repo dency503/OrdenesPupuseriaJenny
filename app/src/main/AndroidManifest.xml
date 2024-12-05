@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Ordenes"
         tools:targetApi="31">
         <activity
+            android:name=".ui.activity.EditarOrdenActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.ConfiguracionActivity"
             android:exported="false" />
         <activity

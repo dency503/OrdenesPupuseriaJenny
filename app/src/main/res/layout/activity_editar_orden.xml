@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/etClienteOrden"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nombre del cliente"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/etFechaOrden"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Fecha de la orden"
+        android:inputType="date" />
+
+    <EditText
+        android:id="@+id/etTipoOrden"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tipo de orden"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/etEstadoOrden"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Estado de la orden"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/etComentarioOrden"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Comentario"
+        android:inputType="text" />
+
+    <Button
+        android:id="@+id/btnGuardar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Guardar" />
+
+</LinearLayout>

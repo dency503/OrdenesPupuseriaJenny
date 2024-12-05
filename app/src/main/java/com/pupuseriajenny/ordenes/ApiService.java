@@ -53,4 +53,10 @@ public interface ApiService {
     Call<Integer> insertarOrden(@Body RG_Orden orden);
     @POST("auth/renew-token") // Suponiendo que esta es la ruta para renovar el token
     Call<LoginResponse> renovarToken(@Header("Authorization") String token);
+
+    //Para editarorden metodos de obtener id de orden y actualizarla
+    @GET("ordenes/{id}")
+    Call<Orden> obtenerOrdenPorId(@Path("id") int id);
+    @PUT("ordenes/{id}")
+    Call<Orden> actualizarOrden(@Path("id") int id, @Body Orden orden);
 }
