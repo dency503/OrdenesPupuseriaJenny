@@ -39,25 +39,7 @@
 
             android:iconifiedByDefault="false" />
 
-        <ImageButton
-        android:id="@+id/btnLista"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/lista"
-
-            app:tint="@android:color/darker_gray"
-        android:contentDescription="Ícono redondo"
-        android:scaleType="centerInside"
-        android:importantForAccessibility="yes" />
-        <ImageButton
-            android:id="@+id/btnCuadro"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/cuadro"
-            app:tint="@android:color/darker_gray"
-            android:contentDescription="Ícono redondo"
-            android:scaleType="centerInside"
-            android:importantForAccessibility="yes" /></LinearLayout>
+    </LinearLayout>
 
     <!-- CardView para cada bebida con imagen, nombre, precio y cantidad -->
     <androidx.recyclerview.widget.RecyclerView

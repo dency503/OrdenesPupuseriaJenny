@@ -139,8 +139,8 @@ public class BebidaActivity extends AppCompatActivity implements BebidaActionsLi
         List<Producto> bebidasFiltradas = new ArrayList<>();
 
         // Filtrar la lista de bebidas
-        for (Producto bebida : productoList) {
-            if (bebida.getNombreProducto().toLowerCase().contains(texto.toLowerCase())) {
+        for (Producto bebida : productoList ){
+            if (bebida.getNombreProducto().toLowerCase().contains(texto.toLowerCase().trim())){
                 bebidasFiltradas.add(bebida);
             }
         }
