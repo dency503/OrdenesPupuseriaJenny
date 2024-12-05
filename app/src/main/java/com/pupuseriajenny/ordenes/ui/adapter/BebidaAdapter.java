@@ -36,8 +36,6 @@ public class BebidaAdapter extends RecyclerView.Adapter<BebidaAdapter.BebidaView
 
     @Override
     public void onBindViewHolder(@NonNull BebidaViewHolder holder, int position) {
-         // Validar si la lista está vacía
-
         Producto bebida = bebidaList.get(position);
         holder.nombreBebida.setText(bebida.getNombreProducto());
         holder.precioBebida.setText("$" + bebida.getPrecioProducto());
@@ -63,27 +61,30 @@ public class BebidaAdapter extends RecyclerView.Adapter<BebidaAdapter.BebidaView
 
     @Override
     public int getItemCount() {
-        return bebidaList != null ? bebidaList.size() : 0; // Validar que la lista no sea null
+        return bebidaList.size();
     }
 
+    // Método para actualizar la lista de bebidas en el adaptador
     public void actualizarLista(List<Producto> nuevaLista) {
-        this.bebidaList = nuevaLista != null ? nuevaLista : new ArrayList<>(); // Actualizar lista y evitar null
-        notifyDataSetChanged(); // Notificar que los datos han cambiado
+        this.bebidaList = nuevaLista;
+        notifyDataSetChanged(); // Notifica los cambios al RecyclerView
     }
 
-    public static class BebidaViewHolder extends RecyclerView.ViewHolder {
-        private final TextView nombreBebida, precioBebida, cantidadBebida;
-        private final ImageView imagenBebida;
-        private final Button aumentarCantidad, restarCantidad;
+    // ViewHolder para los elementos de la lista
+    public class BebidaViewHolder extends RecyclerView.ViewHolder {
+        public ImageView imagenBebida;
+        public TextView nombreBebida, precioBebida, cantidadBebida;
+        public Button aumentarCantidad, restarCantidad;
 
         public BebidaViewHolder(@NonNull View itemView) {
             super(itemView);
+            imagenBebida = itemView.findViewById(R.id.imgBebida);
             nombreBebida = itemView.findViewById(R.id.tvtBebida);
             precioBebida = itemView.findViewById(R.id.tvtPrecio);
-            imagenBebida = itemView.findViewById(R.id.imgBebida);
             cantidadBebida = itemView.findViewById(R.id.cantidadBebida);
             aumentarCantidad = itemView.findViewById(R.id.aumentarCantidad);
             restarCantidad = itemView.findViewById(R.id.restarCantidad);
         }
     }
+
 }

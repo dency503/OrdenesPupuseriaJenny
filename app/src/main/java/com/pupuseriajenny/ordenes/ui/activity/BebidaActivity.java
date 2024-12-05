@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import androidx.appcompat.widget.SearchView;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -38,12 +38,11 @@ public class BebidaActivity extends AppCompatActivity implements BebidaActionsLi
     private RecyclerView recyclerView;
     private Button btnDetalles;
     private BebidaAdapter bebidaAdapter;
-    private List<Producto> productoList = new ArrayList<>();  // Lista de productos
+    private List<Producto> productoList = new ArrayList<>(); // Lista de productos
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this); // Activar el modo EdgeToEdge
         setContentView(R.layout.activity_bebida); // Establecer el layout de la actividad
 
         // Inicializar vistas
@@ -53,11 +52,14 @@ public class BebidaActivity extends AppCompatActivity implements BebidaActionsLi
         setupBebidaList();
 
         // Configurar RecyclerView
-
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        bebidaAdapter = new BebidaAdapter(productoList, this);
+        recyclerView.setAdapter(bebidaAdapter);
 
         // Recuperar el token desde SharedPreferences
         TokenUtil tokenUtil = new TokenUtil(this);
-     // Recuperar la categoría desde el Intent
+
+        // Recuperar la categoría desde el Intent
         Intent intent = getIntent();
         String categoria = intent.getStringExtra("categoria");
 
@@ -72,23 +74,14 @@ public class BebidaActivity extends AppCompatActivity implements BebidaActionsLi
                 public void onResponse(Call<List<Producto>> call, Response<List<Producto>> response) {
                     if (response.isSuccessful() && response.body() != null) {
                         productoList = response.body();
-
-                        // Inicializa el adaptador solo después de recibir los productos
-                        if (bebidaAdapter == null) {
-                            recyclerView.setLayoutManager(new LinearLayoutManager(BebidaActivity.this));
-                            bebidaAdapter = new BebidaAdapter(productoList, BebidaActivity.this); // Inicializa el adaptador aquí
-                            recyclerView.setAdapter(bebidaAdapter); // Asocia el adaptador al RecyclerView
-                        } else {
-                            bebidaAdapter.notifyDataSetChanged(); // Si el adaptador ya está inicializado, solo notifica cambios
-                        }
+                        bebidaAdapter.actualizarLista(productoList); // Actualiza el adaptador con los nuevos datos
 
                         // Mostrar la cantidad de productos
-                       txtCantidad.setText("Total de productos: " + productoList.size());
+                        txtCantidad.setText("Total de productos: " + productoList.size());
                     } else {
                         Toast.makeText(BebidaActivity.this, "No se encontraron productos", Toast.LENGTH_SHORT).show();
                     }
                 }
-
 
                 @Override
                 public void onFailure(Call<List<Producto>> call, Throwable t) {
@@ -100,12 +93,24 @@ public class BebidaActivity extends AppCompatActivity implements BebidaActionsLi
         // Configurar el botón de detalles
         btnDetalles.setOnClickListener(view -> {
             Intent intent2 = new Intent(BebidaActivity.this, OrdenActivity.class);
-            intent2.putExtra("productoslista", (ArrayList<Producto>) bebidasSeleccionadas);  // Se pasa la lista de productos seleccionados
+            intent2.putExtra("productoslista", (ArrayList<Producto>) bebidasSeleccionadas); // Pasa la lista de productos seleccionados
             startActivity(intent2);
         });
 
-        // Manejar los márgenes del sistema (barra de estado, navegación, etc.)
-        handleSystemBarsInsets();
+        // Configurar el SearchView para filtrar bebidas
+        SearchView busqueda = findViewById(R.id.busqueda);
+        busqueda.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false; // No es necesario realizar nada al enviar la búsqueda
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filtrarBebidas(newText); // Llama al método para filtrar
+                return true;
+            }
+        });
     }
 
     /**
@@ -122,17 +127,31 @@ public class BebidaActivity extends AppCompatActivity implements BebidaActionsLi
      * Configura los datos de las bebidas y actualiza el título de la actividad.
      */
     private void setupBebidaList() {
-        // Obtener la categoría pasada en el intent
-
+        // Configuración inicial de bebidas
     }
 
     /**
-     * Configura el RecyclerView con el adaptador y el layout manager.
+     * Filtra las bebidas según el texto ingresado en el SearchView.
+     *
+     * @param texto El texto ingresado en el SearchView.
      */
+    private void filtrarBebidas(String texto) {
+        List<Producto> bebidasFiltradas = new ArrayList<>();
 
+        // Filtrar la lista de bebidas
+        for (Producto bebida : productoList) {
+            if (bebida.getNombreProducto().toLowerCase().contains(texto.toLowerCase())) {
+                bebidasFiltradas.add(bebida);
+            }
+        }
+
+        // Actualizar el adaptador con la lista filtrada
+        bebidaAdapter.actualizarLista(bebidasFiltradas);
+    }
 
     /**
      * Método que se llama desde el adaptador para actualizar la lista de bebidas seleccionadas.
+     *
      * @param bebida Producto cuyo estado de cantidad ha cambiado.
      */
     public void actualizarBebidasSeleccionadas(Producto bebida) {
@@ -146,16 +165,5 @@ public class BebidaActivity extends AppCompatActivity implements BebidaActionsLi
 
         // Actualiza el texto de cantidad para reflejar el total en bebidasSeleccionadas
         txtCantidad.setText("Total de productos seleccionados: " + bebidasSeleccionadas.size());
-    }
-
-    /**
-     * Maneja los márgenes de los "system bars" (barra de estado y navegación).
-     */
-    private void handleSystemBarsInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
     }
 }
