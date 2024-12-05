@@ -46,6 +46,8 @@ dependencies {
     implementation(libs.dotenv.java)
     implementation(libs.jwtdecode)
     implementation(libs.security.crypto)
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
     annotationProcessor(libs.lombok)
 
     testImplementation(libs.junit)

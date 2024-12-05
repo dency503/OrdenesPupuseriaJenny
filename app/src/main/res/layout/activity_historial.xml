@@ -47,6 +47,14 @@
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
+        <Button
+            android:id="@+id/btnCerrar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#C30F0F"
+            android:text="Cerrar Sesion" />
+
     </LinearLayout>
 
     <!-- Layout para mostrar las órdenes tomadas -->

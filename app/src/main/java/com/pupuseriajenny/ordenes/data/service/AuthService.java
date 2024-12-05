@@ -12,6 +12,6 @@ public interface AuthService {
     @POST("api/Auth/login")
     Call<LoginResponse> login(@Body LoginModel loginModel);
 
-    @POST("auth/renew-token") // Suponiendo que esta es la ruta para renovar el token
+    @POST("api/auth/renew-token") // Suponiendo que esta es la ruta para renovar el token
     Call<LoginResponse> renovarToken(@Header("Authorization") String token);
 }

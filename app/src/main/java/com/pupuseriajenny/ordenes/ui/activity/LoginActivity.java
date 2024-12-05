@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.pupuseriajenny.ordenes.AuthManager.AuthManager;
 import com.pupuseriajenny.ordenes.DTOs.LoginModel;
 import com.pupuseriajenny.ordenes.DTOs.LoginResponse;
 import com.pupuseriajenny.ordenes.R;

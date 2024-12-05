@@ -22,6 +22,7 @@ import com.pupuseriajenny.ordenes.R;
 import com.pupuseriajenny.ordenes.RetrofitClient;
 import com.pupuseriajenny.ordenes.data.model.DetallesVentas;
 import com.pupuseriajenny.ordenes.data.model.DetallesVentasResponse;
+import com.pupuseriajenny.ordenes.data.model.Orden;
 import com.pupuseriajenny.ordenes.data.model.Producto;
 import com.pupuseriajenny.ordenes.data.model.RG_Orden;
 import com.pupuseriajenny.ordenes.data.model.Venta;
@@ -105,7 +106,7 @@ private EditText edtComentario;
     }
 
     private void crearOrden() {
-        RG_Orden orden = new RG_Orden();
+        Orden orden = new Orden();
 
 
         try {
@@ -126,6 +127,7 @@ private EditText edtComentario;
             Toast.makeText(this, "Por favor ingresa el nombre del cliente", Toast.LENGTH_SHORT).show();
             return;
         }
+        orden.setClienteOrden(nombreCliente);
         orden.setFechaOrden(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
         String tipoOrden = spnTipoOrden.getSelectedItem().toString();
         orden.setTipoOrden(tipoOrden);

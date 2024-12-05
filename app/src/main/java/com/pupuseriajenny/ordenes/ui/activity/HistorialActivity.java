@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.pupuseriajenny.ordenes.ApiService;
+import com.pupuseriajenny.ordenes.AuthManager.AuthManager;
 import com.pupuseriajenny.ordenes.R;
 import com.pupuseriajenny.ordenes.RetrofitClient;
 import com.pupuseriajenny.ordenes.data.model.Orden;
@@ -33,14 +34,19 @@ public class HistorialActivity extends AppCompatActivity implements HistorialAda
     private HistorialAdapter historialAdapter;
     private List<Orden> listaOrdenes = new ArrayList<>();
     private ApiService apiService;
-    private Button btnAgregar;
+    private Button btnAgregar,btnCerrar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_historial);
+        AuthManager authManager = new AuthManager(this);
 
+        // Verificar la expiración del token cuando la actividad se inicia
+        authManager.verificarExpiracionDelToken();
         // Inicializar vistas
+        btnCerrar = findViewById(R.id.btnCerrar) ;
+        btnCerrar = findViewById(R.id.btnCerrar) ;
         tvUsuario = findViewById(R.id.tvUsuario);
         btnAgregar = findViewById(R.id.btnNueva);
         recyclerView = findViewById(R.id.recyclerViewHistorial);
@@ -62,6 +68,9 @@ public class HistorialActivity extends AppCompatActivity implements HistorialAda
         btnAgregar.setOnClickListener(view -> {
             Intent intent = new Intent(HistorialActivity.this, HomeActivity.class);
             startActivity(intent);
+        });
+        btnCerrar.setOnClickListener(view -> {
+authManager.cerrarSesion();
         });
     }
 

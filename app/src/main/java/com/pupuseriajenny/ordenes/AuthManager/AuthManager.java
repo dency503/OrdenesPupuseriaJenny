@@ -22,8 +22,8 @@ import retrofit2.Response;
 
 public class AuthManager {
 
-    private Context context;
-    private TokenUtil tokenUtil;
+    private final Context context;
+    private final TokenUtil tokenUtil;
 
     public AuthManager(Context context) {
         this.context = context;
@@ -45,10 +45,12 @@ public class AuthManager {
             } else {
                 // Si está cerca de expirar, preguntar si lo quiere renovar
                 long diferenciaEnMillis = fechaExpiracion.getTime() - ahora.getTime();
-                long minutosRestantes = diferenciaEnMillis / (1000 * 60); // Convierte a minutos
+                long minutosRestantes = diferenciaEnMillis / (1000 * 10); // Convierte a minutos
 
                 if (minutosRestantes <= 10) {
                     mostrarDialogoRenovarToken();
+                    Toast.makeText(context, "Tu sesión ha sido renovada.", Toast.LENGTH_SHORT).show();
+
                 }
             }
         }
@@ -90,7 +92,7 @@ public class AuthManager {
     }
 
     // Cerrar la sesión y redirigir al login
-    private void cerrarSesion() {
+    public void cerrarSesion() {
         tokenUtil.removeToken(); // Eliminar el token
         redirigirALogin();
     }

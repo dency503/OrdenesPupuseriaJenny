@@ -1,6 +1,12 @@
 package com.pupuseriajenny.ordenes.data.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class RG_Orden {
+    // Getters y Setters
     private int idOrden;               // ID de la orden
     private int idMesa;                // ID de la mesa
     private String clienteOrden;       // Nombre del cliente
@@ -22,60 +28,4 @@ public class RG_Orden {
         this.comentarioOrden = comentarioOrden;
     }
 
-    // Getters y Setters
-    public int getIdOrden() {
-        return idOrden;
-    }
-
-    public void setIdOrden(int idOrden) {
-        this.idOrden = idOrden;
-    }
-
-    public int getIdMesa() {
-        return idMesa;
-    }
-
-    public void setIdMesa(int idMesa) {
-        this.idMesa = idMesa;
-    }
-
-    public String getClienteOrden() {
-        return clienteOrden;
-    }
-
-    public void setClienteOrden(String clienteOrden) {
-        this.clienteOrden = clienteOrden;
-    }
-
-    public String getFechaOrden() {
-        return fechaOrden;
-    }
-
-    public void setFechaOrden(String fechaOrden) {
-        this.fechaOrden = fechaOrden;
-    }
-
-    public String getTipoOrden() {
-        return tipoOrden;
-    }
-
-    public void setTipoOrden(String tipoOrden) {
-        this.tipoOrden = tipoOrden;
-    }
-
-    public String getEstadoOrden() {
-        return estadoOrden;
-    }
-
-    public void setEstadoOrden(String estadoOrden) {
-        this.estadoOrden = estadoOrden;
-    }
-
-    public String getComentarioOrden() {
-        return comentarioOrden;
-    }
-
-    public void setComentarioOrden(String comentarioOrden) {
-        this.comentarioOrden = comentarioOrden;
-    }
 }

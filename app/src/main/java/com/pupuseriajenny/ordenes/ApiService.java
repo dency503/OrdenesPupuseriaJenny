@@ -50,7 +50,7 @@ public interface ApiService {
     @POST("api/detalleventa")
     Call<DetallesVentas> actualizarDetalleVenta(@Body DetallesVentas detallesVentas);
     @POST("api/orden")
-    Call<Integer> insertarOrden(@Body RG_Orden orden);
+    Call<Integer> insertarOrden(@Body Orden orden);
     @POST("auth/renew-token") // Suponiendo que esta es la ruta para renovar el token
     Call<LoginResponse> renovarToken(@Header("Authorization") String token);
 }
