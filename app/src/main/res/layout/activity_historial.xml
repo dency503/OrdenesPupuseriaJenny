@@ -83,6 +83,19 @@
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:layout_gravity="center" />
+                <!-- Botones de Acción -->
+
+
+                <Button
+                    android:id="@+id/btnNueva"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Orden Nueva"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="@color/btnNueva"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:elevation="4dp" />
 
                 <!-- RecyclerView -->
                 <androidx.recyclerview.widget.RecyclerView
@@ -91,28 +104,11 @@
                     android:layout_height="match_parent"
                     app:cardBackgroundColor="@color/GrayLight"
                     android:layout_marginTop="10dp"
+
                     android:scrollbars="vertical" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Botones de Acción -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="16dp">
 
-        <Button
-            android:id="@+id/btnNueva"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Orden Nueva"
-            android:layout_margin="8dp"
-            android:backgroundTint="@color/btnNueva"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:elevation="4dp" />
-    </LinearLayout>
 </LinearLayout>
