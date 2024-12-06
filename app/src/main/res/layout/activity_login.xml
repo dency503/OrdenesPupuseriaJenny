@@ -13,7 +13,7 @@
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#0A1828"
+        android:background="@color/white"
         android:elevation="4dp"
         android:padding="8dp">
 
@@ -43,14 +43,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="1dp"
-        android:background="#0A1828"
+        android:background="@drawable/fondo"
         android:orientation="vertical"
         android:gravity="center">
 
         <ImageView
             android:layout_width="275dp"
             android:layout_height="240dp"
-            android:src="@drawable/logo"
+            android:src="@drawable/logo2"
             android:backgroundTint="#0A1828"
             android:scaleType="centerCrop"/>
 

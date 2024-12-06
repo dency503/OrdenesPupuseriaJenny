@@ -2,12 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Ordenes" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-    <item name="colorPrimary">@color/GrayLight</item> <item name="android:windowBackground">#89A4A9</item>
-
-
-    </style>
-    <style name="Theme.ButtonChanger" parent="Theme.AppCompat.Light.NoActionBar">
-       <item name="colorPrimary">#178582</item>
+    <item name="colorPrimary">@color/GrayLight</item> <item name="android:windowBackground">#232C3B</item>
 
 
     </style>
