@@ -6,6 +6,11 @@
 
 
     </style>
+    <style name="Theme.ButtonChanger" parent="Theme.AppCompat.Light.NoActionBar">
+       <item name="colorPrimary">#178582</item>
+
+
+    </style>
 
     <style name="Theme.Ordenes" parent="Base.Theme.Ordenes" />
 </resources>
