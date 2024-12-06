@@ -7,9 +7,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ImageView;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.pupuseriajenny.ordenes.R;
-
 
 public class BebidaItemView extends LinearLayout {
 
@@ -18,7 +18,7 @@ public class BebidaItemView extends LinearLayout {
     private ImageView imgBebida;
     private Button restarCantidad;
     private Button aumentarCantidad;
-    private TextView cantidadBebida;
+    private EditText cantidadBebida;
 
     public BebidaItemView(Context context) {
         super(context);
@@ -54,7 +54,8 @@ public class BebidaItemView extends LinearLayout {
 
     // Obtener la cantidad actual
     public int getCantidad() {
-        return Integer.parseInt(cantidadBebida.getText().toString());
+        String cantidadTexto = cantidadBebida.getText().toString();
+        return cantidadTexto.isEmpty() ? 0 : Integer.parseInt(cantidadTexto);
     }
 
     // Incrementar la cantidad
