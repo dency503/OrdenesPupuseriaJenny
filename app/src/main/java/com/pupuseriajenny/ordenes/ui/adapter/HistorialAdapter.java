@@ -37,12 +37,6 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.View
     public void onBindViewHolder(ViewHolder holder, int position) {
         Orden orden = ordenes.get(position);
         holder.bind(orden);
-        // Detectar clic para editar la orden
-        holder.itemView.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onEditarOrden(orden);  // Llama al listener para editar la orden
-            }
-        });
     }
 
     @Override
