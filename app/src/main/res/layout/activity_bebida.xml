@@ -36,7 +36,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:queryHint="Buscar bebida"
-            android:iconifiedByDefault="false" />
+            android:iconifiedByDefault="false"
+            android:theme="@style/WhiteIconTheme" />
 
     </LinearLayout>
 
