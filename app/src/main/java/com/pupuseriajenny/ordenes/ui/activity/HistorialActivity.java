@@ -27,6 +27,8 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class HistorialActivity extends AppCompatActivity implements HistorialAdapter.OnOrdenInteractionListener {
 
@@ -81,7 +83,19 @@ authManager.cerrarSesion();
             public void onResponse(Call<List<Orden>> call, Response<List<Orden>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     listaOrdenes = response.body();
-                    // Configurar el adaptador con los datos
+
+                    // Ordenar la lista de órdenes por fecha (más reciente primero)
+                    Collections.sort(listaOrdenes, new Comparator<Orden>() {
+                        @Override
+                        public int compare(Orden o1, Orden o2) {
+                            if (o1.getFechaOrden() == null || o2.getFechaOrden() == null) {
+                                return 0; // Manejar casos donde la fecha es nula
+                            }
+                            return o2.getFechaOrden().compareTo(o1.getFechaOrden()); // Cambiar el orden si es necesario
+                        }
+                    });
+
+                    // Configurar el adaptador con los datos ordenados
                     if (historialAdapter == null) {
                         historialAdapter = new HistorialAdapter(listaOrdenes, HistorialActivity.this);
                         recyclerView.setAdapter(historialAdapter);
@@ -99,6 +113,7 @@ authManager.cerrarSesion();
             }
         });
     }
+
 
     // Mostrar mensajes con Toast
     private void showToast(String message) {
