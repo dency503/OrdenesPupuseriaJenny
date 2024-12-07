@@ -147,6 +147,8 @@ public class EditarOrdenActivity extends AppCompatActivity {
     }
 
     // Método para mostrar el DatePickerDialog
+    // Método para actualizar la orden en la API
+
     private void showDatePickerDialog() {
         // Obtener la fecha actual
         Calendar calendar = Calendar.getInstance();
@@ -161,19 +163,17 @@ public class EditarOrdenActivity extends AppCompatActivity {
                     Calendar selectedDate = Calendar.getInstance();
                     selectedDate.set(selectedYear, selectedMonth, selectedDay);
 
-                    // Formatear la fecha en el formato requerido: yyyy-MM-dd'T'HH:mm:ss
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+                    // Formatear la fecha en el formato requerido: dd/MM/yyyy
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                     String fechaSeleccionada = sdf.format(selectedDate.getTime());
 
                     // Establecer la fecha en el EditText
-                    edtFecha.setText(fechaSeleccionada); // Establecer la fecha en el EditText
+                    edtFecha.setText(fechaSeleccionada);
                 }, year, month, day);
 
         // Mostrar el DatePickerDialog
         datePickerDialog.show();
     }
-
-    // Método para actualizar la orden en la API
     private void actualizarOrden(int idOrden, String cliente, String fecha, String tipo, String estado, String comentario) {
         // Crear el objeto Orden con los nuevos datos
         Orden ordenActualizada = new Orden();
