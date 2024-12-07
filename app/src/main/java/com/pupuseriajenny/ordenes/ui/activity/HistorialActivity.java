@@ -24,6 +24,13 @@ import com.pupuseriajenny.ordenes.utils.TokenUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Collections;
+import java.util.Comparator;
+
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -88,10 +95,16 @@ authManager.cerrarSesion();
                     Collections.sort(listaOrdenes, new Comparator<Orden>() {
                         @Override
                         public int compare(Orden o1, Orden o2) {
-                            if (o1.getFechaOrden() == null || o2.getFechaOrden() == null) {
-                                return 0; // Manejar casos donde la fecha es nula
+                            try {
+                                // Parsear las fechas y ordenarlas
+                                SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+                                Date date1 = inputFormat.parse(o1.getFechaOrden());
+                                Date date2 = inputFormat.parse(o2.getFechaOrden());
+                                return date2.compareTo(date1); // Más reciente primero
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                return 0; // Si hay error, no cambiar el orden
                             }
-                            return o2.getFechaOrden().compareTo(o1.getFechaOrden()); // Cambiar el orden si es necesario
                         }
                     });
 
@@ -113,7 +126,6 @@ authManager.cerrarSesion();
             }
         });
     }
-
 
     // Mostrar mensajes con Toast
     private void showToast(String message) {
