@@ -20,7 +20,7 @@ import com.pupuseriajenny.ordenes.R;
 public class ConfiguracionActivity extends AppCompatActivity {
     private EditText etUrlApi;
     private Button btnGuardar;
-    private TextView tvInstruccion;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,6 @@ public class ConfiguracionActivity extends AppCompatActivity {
         etUrlApi = findViewById(R.id.et_url_api);
         btnGuardar = findViewById(R.id.btn_guardar);
 
-        tvInstruccion = findViewById(R.id.tv_instruccion);
 
         // Guardar la URL en SharedPreferences
         btnGuardar.setOnClickListener(new View.OnClickListener() {

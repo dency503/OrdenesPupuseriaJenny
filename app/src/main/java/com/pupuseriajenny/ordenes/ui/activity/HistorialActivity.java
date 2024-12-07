@@ -150,26 +150,17 @@ authManager.cerrarSesion();
     // Implementación de la interfaz OnOrdenInteractionListener para editar y eliminar órdenes
     @Override
     public void onEditarOrden(Orden orden) {
-
         new AlertDialog.Builder(this)
                 .setTitle("Editar Orden")
                 .setMessage("¿Desea editar la orden de " + orden.getClienteOrden() + "?")
                 .setPositiveButton("Sí", (dialog, which) -> {
-                    // Crear un Intent para enviar a EditarOrdenActivity
+                    Log.d("HistorialActivity", "ID de la orden pasada: " + orden.getIdOrden());
                     Intent intent = new Intent(HistorialActivity.this, EditarOrdenActivity.class);
-
-                    // Pasar los datos de la orden (ID, cliente, fecha, etc.)
                     intent.putExtra("idOrden", orden.getIdOrden());
-                    intent.putExtra("clienteOrden", orden.getClienteOrden());
-                    intent.putExtra("fechaOrden", orden.getFechaOrden());
-                    intent.putExtra("tipoOrden", orden.getTipoOrden());
-                    intent.putExtra("estadoOrden", orden.getEstadoOrden());
-                    intent.putExtra("comentarioOrden", orden.getComentarioOrden());
 
-                    // Iniciar la actividad de edición
                     startActivity(intent);
                 })
-                .setNegativeButton("No", null)  // Si el usuario elige "No", no hacer nada
+                .setNegativeButton("No", null)
                 .show();
     }
 

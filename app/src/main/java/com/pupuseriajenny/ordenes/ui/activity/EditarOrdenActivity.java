@@ -1,30 +1,26 @@
 package com.pupuseriajenny.ordenes.ui.activity;
 
-import android.app.AlertDialog;
-import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.pupuseriajenny.ordenes.ApiService;
 import com.pupuseriajenny.ordenes.R;
 import com.pupuseriajenny.ordenes.RetrofitClient;
+import com.pupuseriajenny.ordenes.data.model.DetallesVentas;
 import com.pupuseriajenny.ordenes.data.model.Orden;
+import com.pupuseriajenny.ordenes.data.model.Producto;
+import com.pupuseriajenny.ordenes.ui.adapter.ProductoAdapter;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,180 +28,110 @@ import retrofit2.Response;
 
 public class EditarOrdenActivity extends AppCompatActivity {
     private ApiService apiService;
-    private EditText edtCliente, edtFecha, edtComentario;
-    private Spinner spinnerTipo, spinnerEstado;
+    private RecyclerView recyclerView;
     private Button btnGuardar;
     private int idOrden;
+    private List<Producto> productoList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editar_orden);
 
-        // Obtener los datos pasados por Intent
+        // Inicializar RecyclerView
+        recyclerView = findViewById(R.id.recyclerViewBebidas);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // Configurar el adaptador
+        ProductoAdapter productoAdapter = new ProductoAdapter(productoList);
+        recyclerView.setAdapter(productoAdapter);
+
+        // Obtener productos de la orden
+        apiService = RetrofitClient.getClient(this).create(ApiService.class);
         idOrden = getIntent().getIntExtra("idOrden", -1);
-        String clienteOrden = getIntent().getStringExtra("clienteOrden");
-        String fechaOrden = getIntent().getStringExtra("fechaOrden");
-        String tipoOrden = getIntent().getStringExtra("tipoOrden");
-        String estadoOrden = getIntent().getStringExtra("estadoOrden");
-        String comentarioOrden = getIntent().getStringExtra("comentarioOrden");
-
-        // Asignar los valores a los campos de la UI
-        edtCliente = findViewById(R.id.edtCliente);
-        edtFecha = findViewById(R.id.edtFecha);
-        edtComentario = findViewById(R.id.edtComentario);
-
-        // Spinners para Tipo y Estado de la Orden
-        spinnerTipo = findViewById(R.id.spinnerTipoOrden);
-        spinnerEstado = findViewById(R.id.spinnerEstadoOrden);
-
-        // Configurar los Spinners con los valores de strings.xml
-        ArrayAdapter<CharSequence> adapterTipo = ArrayAdapter.createFromResource(this,
-                R.array.tipo_orden, android.R.layout.simple_spinner_item);
-        adapterTipo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerTipo.setAdapter(adapterTipo);
-
-        ArrayAdapter<CharSequence> adapterEstado = ArrayAdapter.createFromResource(this,
-                R.array.estado_orden, android.R.layout.simple_spinner_item);
-        adapterEstado.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerEstado.setAdapter(adapterEstado);
-
-        // Establecer los valores seleccionados en los Spinners
-        setSpinnerSelection(spinnerTipo, tipoOrden, R.array.tipo_orden);
-        setSpinnerSelection(spinnerEstado, estadoOrden, R.array.estado_orden);
-
-        edtCliente.setText(clienteOrden);
-        edtComentario.setText(comentarioOrden);
-
-        // Cargar la fecha inicial en el EditText
-        edtFecha.setText(fechaOrden);
-
-        // Configurar el DatePickerDialog al hacer clic en el icono del calendario
-        ImageView imgCalendar = findViewById(R.id.imgCalendar);
-        imgCalendar.setOnClickListener(v -> showDatePickerDialog());
-
-        // Botón para guardar los cambios
+        if (idOrden == -1) {
+            Log.e("EditarOrdenActivity", "ID de la orden no válido.");
+            Toast.makeText(this, "ID de orden inválido", Toast.LENGTH_SHORT).show();
+            return;
+        } else {
+            Log.d("EditarOrdenActivity", "ID de la orden recibida: " + idOrden);
+            obtenerProductosOrden(idOrden, productoAdapter);
+        }
+        // Configurar el botón Guardar
         btnGuardar = findViewById(R.id.btnGuardar);
-        btnGuardar.setOnClickListener(v -> {
-            // Recoger los datos editados por el usuario
-            String nuevoCliente = edtCliente.getText().toString();
-            String nuevaFecha = edtFecha.getText().toString();
-            String nuevoTipo = spinnerTipo.getSelectedItem().toString();
-            String nuevoEstado = spinnerEstado.getSelectedItem().toString();
-            String nuevoComentario = edtComentario.getText().toString();
+        btnGuardar.setOnClickListener(view -> cambiarEstadoOrden(idOrden, "Pagada"));
+    }
 
-            // Validaciones antes de continuar
-            if (validarCampos(nuevoCliente, nuevaFecha, nuevoTipo, nuevoEstado)) {
-                // Si todo está correcto, mostrar el AlertDialog de confirmación
-                mostrarDialogoConfirmacion(nuevoCliente, nuevaFecha, nuevoTipo, nuevoEstado, nuevoComentario);
+    private void obtenerProductosOrden(int idOrden, ProductoAdapter adapter) {
+        Call<List<DetallesVentas>> call = apiService.obtenerDetallesPorOrden(idOrden);
+        call.enqueue(new Callback<List<DetallesVentas>>() {
+
+            @Override
+            public void onResponse(Call<List<DetallesVentas>> call, Response<List<DetallesVentas>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<DetallesVentas> detallesVentas = response.body();
+                    productoList.clear();
+
+                    // Convertir cada DetallesVentas a Producto
+                    for (DetallesVentas detalles : detallesVentas) {
+                        if (detalles.getNombreProducto() == null || detalles.getCantidad() <= 0) {
+                            Log.e("EditarOrdenActivity", "Datos inválidos en DetallesVentas: " + detalles.toString());
+                            continue;
+                        }
+                        Producto producto = new Producto();
+                        producto.setNombreProducto(detalles.getNombreProducto());
+                        producto.setCantidad(detalles.getCantidad());
+                        producto.setPrecioProducto(detalles.getPrecio());
+                        producto.setSubTotalProducto(detalles.getSubTotal());
+                        productoList.add(producto);
+                    }
+
+                    Log.d("EditarOrdenActivity", "Productos obtenidos: " + detallesVentas.size());
+                    adapter.notifyDataSetChanged();
+                } else {
+                    Log.e("EditarOrdenActivity", "Error en la respuesta: " + response.code() + " - " + response.message());
+                    if (response.errorBody() != null) {
+                        try {
+                            Log.e("EditarOrdenActivity", "Error body: " + response.errorBody().string());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    Toast.makeText(EditarOrdenActivity.this, "Error al obtener productos", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<DetallesVentas>> call, Throwable t) {
+                // Manejar error de la llamada
+                Log.e("EditarOrdenActivity", "Fallo en la solicitud: " + t.getMessage());
+                Toast.makeText(EditarOrdenActivity.this, "Error de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                t.printStackTrace();
             }
         });
     }
-    // Método para validar los campos
-    private boolean validarCampos(String cliente, String fecha, String tipo, String estado) {
-        if (cliente.isEmpty()) {
-            edtCliente.setError("El cliente es obligatorio");
-            return false;
-        }
-        if (fecha.isEmpty()) {
-            edtFecha.setError("La fecha es obligatoria");
-            return false;
-        }
-        if (tipo.equals("Seleccionar tipo")) {
-            Toast.makeText(this, "Selecciona un tipo de orden", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (estado.equals("Seleccionar estado")) {
-            Toast.makeText(this, "Selecciona un estado de orden", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        return true;
-    }
-
-    // Método para mostrar el AlertDialog de confirmación
-    private void mostrarDialogoConfirmacion(String cliente, String fecha, String tipo, String estado, String comentario) {
-        new AlertDialog.Builder(this)
-                .setTitle("Confirmar cambios")
-                .setMessage("¿Estás seguro de que deseas guardar los cambios?")
-                .setPositiveButton("Guardar", (dialog, which) -> {
-                    // Si el usuario confirma, se actualiza la orden en la API
-                    actualizarOrden(idOrden, cliente, fecha, tipo, estado, comentario);
-                })
-                .setNegativeButton("Cancelar", (dialog, which) -> {
-                    // Si el usuario cancela, no hace nada
-                    dialog.dismiss();
-                })
-                .show();
-    }
-
-    // Método para establecer la selección en un Spinner
-    private void setSpinnerSelection(Spinner spinner, String value, int arrayResId) {
-        ArrayAdapter<CharSequence> adapter = (ArrayAdapter<CharSequence>) spinner.getAdapter();
-        int position = adapter.getPosition(value); // Obtener la posición de valor en el array
-        spinner.setSelection(position); // Establecer la selección
-    }
-
-    // Método para mostrar el DatePickerDialog
-    // Método para actualizar la orden en la API
-
-    private void showDatePickerDialog() {
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                (view, selectedYear, selectedMonth, selectedDay) -> {
-                    // Crear el objeto Calendar con la fecha seleccionada
-                    Calendar selectedDate = Calendar.getInstance();
-                    selectedDate.set(selectedYear, selectedMonth, selectedDay);
-
-                    // Formatear la fecha en el formato requerido: dd/MM/yyyy HH:mm:ss
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
-                    String fechaSeleccionada = sdf.format(selectedDate.getTime());
-
-                    // Establecer la fecha en el EditText
-                    edtFecha.setText(fechaSeleccionada);
-                }, year, month, day);
-
-        datePickerDialog.show();
-    }
-
-    private void actualizarOrden(int idOrden, String cliente, String fecha, String tipo, String estado, String comentario) {
-        // Crear el objeto Orden con los nuevos datos
+    private void cambiarEstadoOrden(int idOrden, String nuevoEstado) {
+        // Crear objeto Orden con el nuevo estado
         Orden ordenActualizada = new Orden();
-        ordenActualizada.setIdOrden(idOrden);
-        ordenActualizada.setClienteOrden(cliente);
-        ordenActualizada.setFechaOrden(fecha);
-        ordenActualizada.setTipoOrden(tipo);
-        ordenActualizada.setEstadoOrden(estado);
-        ordenActualizada.setComentarioOrden(comentario);
+        ordenActualizada.setEstadoOrden(nuevoEstado);
 
-        // Llamada a la API para actualizar la orden
+        // Realizar la solicitud para actualizar el estado de la orden
         apiService.actualizarEstadoOrden(idOrden, ordenActualizada).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    showToast("Orden actualizada correctamente");
-                    finish(); // Volver a la actividad anterior (HistorialActivity)
+                    Toast.makeText(EditarOrdenActivity.this, "Orden marcada como Pagada", Toast.LENGTH_SHORT).show();
+                    finish(); // Finalizar la actividad o redirigir
                 } else {
-                    showToast("Error al actualizar la orden");
+                    Toast.makeText(EditarOrdenActivity.this, "Error al actualizar la orden", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                showToast("Error de red: " + t.getMessage());
+                Toast.makeText(EditarOrdenActivity.this, "Error de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void showToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
 }
-
-
-
-
-

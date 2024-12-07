@@ -9,8 +9,10 @@ public class DetallesVentas {
     private int idDetalleVenta;
     private int idOrden;
     private int idProducto;
-    private int cantidadDetalleVenta;
-    private double subTotalDetalleVenta;
+    private String nombreProducto;
+    private double precio;
+    private int cantidad;
+    private double subTotal;
 
     // Constructor vacío (opcional)
     public DetallesVentas() {

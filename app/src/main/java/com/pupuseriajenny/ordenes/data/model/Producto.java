@@ -13,8 +13,13 @@ public class Producto implements Serializable {
     private String nombreProducto;
     private double costoUnitarioProducto;
     private double precioProducto;
+    private double subTotalProducto;
     private int imagenResourceId;
     private int cantidad;
+
+    public Producto() {
+        // Constructor vacío
+    }
 
     // Getters
     public String getNombreProducto() {
@@ -40,5 +45,14 @@ public class Producto implements Serializable {
     // Setter para cantidad
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
+    }
+    public void setNombreProducto(String nombreProducto) {
+        this.nombreProducto = nombreProducto;
+    }
+    public void setCostoUnitarioProducto(double costoUnitarioProducto) {
+        this.costoUnitarioProducto = costoUnitarioProducto;
+    }
+    public void setPrecioProducto(double precioProducto) {
+        this.precioProducto = precioProducto;
     }
 }

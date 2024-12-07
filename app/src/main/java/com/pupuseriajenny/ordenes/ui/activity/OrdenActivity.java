@@ -169,8 +169,8 @@ private EditText edtComentario;
             DetallesVentas detalleVenta = new DetallesVentas();
             detalleVenta.setIdProducto(producto.getIdProducto());
             detalleVenta.setIdOrden(idOrden);
-            detalleVenta.setCantidadDetalleVenta(producto.getCantidad());
-            detalleVenta.setSubTotalDetalleVenta(producto.getPrecioProducto() * producto.getCantidad());
+            detalleVenta.setCantidad(producto.getCantidad());
+            detalleVenta.setSubTotal(producto.getPrecioProducto() * producto.getCantidad());
 
             // Insertar detalles de venta
             apiService.insertarDetalleVenta(detalleVenta).enqueue(new Callback<DetallesVentasResponse>() {
