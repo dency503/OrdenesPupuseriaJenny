@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Bebidas"
+        android:text="BEBIDAS"
         android:textColor="@android:color/white"
         android:textStyle="bold"
         android:textSize="26sp"
@@ -36,7 +36,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:queryHint="Buscar bebida"
-
             android:iconifiedByDefault="false" />
 
     </LinearLayout>
@@ -61,6 +60,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Total de productos: 0"
+            android:textColor="@color/white"
             android:textSize="18sp"
             android:layout_weight="1" />
 
@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             android:text="Detalles"
             android:textSize="16sp"
-            android:backgroundTint="@color/cardview_dark_background"
+            android:backgroundTint="#178582"
             android:textColor="@android:color/white" />
     </LinearLayout>
 
