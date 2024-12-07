@@ -5,7 +5,7 @@
     <string-array name="tipo_orden">
         <item>Comer en restaurante</item>
         <item>Llevar</item>
-        <item>Entrega a domicilio</item>
+
     </string-array>
 
     <string-array name="estado_orden">

@@ -37,6 +37,7 @@ public interface ApiService {
 
     @DELETE("/api/Orden/{id}")
     Call<Void> eliminarOrden(@Path("id") int id);
+    @POST("/api/Venta")
     Call<Venta> insertarVenta(@Body Venta venta);
     @GET("/api/Orden/pendientes/con-mesa")
     Call<List<Orden>> obtenerOrdenes();

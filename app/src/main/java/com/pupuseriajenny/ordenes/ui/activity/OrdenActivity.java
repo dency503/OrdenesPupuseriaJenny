@@ -136,7 +136,7 @@ private EditText edtComentario;
         orden.setClienteOrden(nombreCliente);
 
         // Configurar el formato de la fecha y hora
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String fechaFormateada = dateFormat.format(new Date());
         orden.setFechaOrden(fechaFormateada);
 
@@ -152,6 +152,7 @@ private EditText edtComentario;
                 if (response.isSuccessful() && response.body() != null) {
                     insertarDetallesVenta(response.body()); // Usamos el id de la orden
                 } else {
+                    txtTotal.setText(response.toString());
                     showToast("Error al crear la orden");
                 }
             }
