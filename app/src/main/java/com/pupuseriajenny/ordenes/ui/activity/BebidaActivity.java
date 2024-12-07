@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.pupuseriajenny.ordenes.ApiService;
+import com.pupuseriajenny.ordenes.AuthManager.AuthManager;
 import com.pupuseriajenny.ordenes.R;
 import com.pupuseriajenny.ordenes.RetrofitClient;
 import com.pupuseriajenny.ordenes.data.model.Producto;
@@ -44,7 +45,11 @@ public class BebidaActivity extends AppCompatActivity implements BebidaActionsLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bebida); // Establecer el layout de la actividad
+        // Crear instancia de AuthManager
+        AuthManager authManager = new AuthManager(this);
 
+        // Verificar la expiración del token cuando la actividad se inicia
+        authManager.verificarExpiracionDelToken();
         // Inicializar vistas
         initializeViews();
 

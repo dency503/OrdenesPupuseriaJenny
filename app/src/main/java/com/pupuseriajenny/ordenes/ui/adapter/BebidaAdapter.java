@@ -1,5 +1,7 @@
 package com.pupuseriajenny.ordenes.ui.adapter;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +49,29 @@ public class BebidaAdapter extends RecyclerView.Adapter<BebidaAdapter.BebidaView
             bebida.setCantidad(bebida.getCantidad() + 1); // Aumentar cantidad
             holder.cantidadBebida.setText(String.valueOf(bebida.getCantidad())); // Actualizar UI
             actionsListener.actualizarBebidasSeleccionadas(bebida); // Notificar cambio
+        });
+        holder.cantidadBebida.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                try {
+                    int cantidad = Integer.parseInt(s.toString());
+                    if (cantidad >= 0) {
+                        bebida.setCantidad(cantidad);
+                        actionsListener.actualizarBebidasSeleccionadas(bebida);
+                    } else {
+                        holder.cantidadBebida.setText("0"); // Revertir a 0 si el número es negativo
+                    }
+                } catch (NumberFormatException e) {
+                    // Si no se puede parsear, por ejemplo, el campo está vacío
+                    holder.cantidadBebida.setText("0");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
         });
 
         // Acción para disminuir la cantidad
