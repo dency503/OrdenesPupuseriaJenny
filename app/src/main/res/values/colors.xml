@@ -2,6 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="GrayLight">#D9D9D9</color>
-    <color name="Gray">#878484</color>
+    <color name="GrayLight">#E2DDDD</color>
+    <color name="Gray">#8A8787</color>
+    <color name="Celeste">#CBD7FB</color>
+    <color name="btnNueva">#242426</color>
+
 </resources>

@@ -2,6 +2,7 @@ package com.pupuseriajenny.ordenes.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -121,7 +122,7 @@ authManager.cerrarSesion();
                     // Actualizar la lista de órdenes después de la cancelación
                     obtenerOrdenes();
                 } else {
-                   tvUsuario.setText(response.toString());
+                    tvUsuario.setText(response.toString());
                 }
             }
 
@@ -135,17 +136,26 @@ authManager.cerrarSesion();
     // Implementación de la interfaz OnOrdenInteractionListener para editar y eliminar órdenes
     @Override
     public void onEditarOrden(Orden orden) {
-        // Lógica para editar la orden
-        //Toast.makeText(this, "Editar orden de: " + orden.getClienteOrden(), Toast.LENGTH_SHORT).show();
-        // Diálogo de confirmación para eliminar
+
         new AlertDialog.Builder(this)
                 .setTitle("Editar Orden")
                 .setMessage("¿Desea editar la orden de " + orden.getClienteOrden() + "?")
                 .setPositiveButton("Sí", (dialog, which) -> {
+                    // Crear un Intent para enviar a EditarOrdenActivity
+                    Intent intent = new Intent(HistorialActivity.this, EditarOrdenActivity.class);
 
+                    // Pasar los datos de la orden (ID, cliente, fecha, etc.)
+                    intent.putExtra("idOrden", orden.getIdOrden());
+                    intent.putExtra("clienteOrden", orden.getClienteOrden());
+                    intent.putExtra("fechaOrden", orden.getFechaOrden());
+                    intent.putExtra("tipoOrden", orden.getTipoOrden());
+                    intent.putExtra("estadoOrden", orden.getEstadoOrden());
+                    intent.putExtra("comentarioOrden", orden.getComentarioOrden());
 
+                    // Iniciar la actividad de edición
+                    startActivity(intent);
                 })
-                .setNegativeButton("No", null)
+                .setNegativeButton("No", null)  // Si el usuario elige "No", no hacer nada
                 .show();
     }
 
@@ -165,3 +175,4 @@ authManager.cerrarSesion();
                 .show();
     }
 }
+
