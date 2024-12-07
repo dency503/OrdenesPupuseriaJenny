@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ui.activity.HistorialActivity"
-    android:padding="18dp">
+    android:paddingTop="20dp">
 
     <!-- Encabezado de Usuario y Nombre -->
     <LinearLayout
@@ -15,7 +15,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:padding="8dp">
+        android:layout_margin="15dp"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp">
 
         <!-- Icono de Usuario -->
         <com.google.android.material.card.MaterialCardView
@@ -29,7 +31,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/img"
+                android:src="@drawable/imagenpredeterminada"
                 android:scaleType="centerCrop" />
         </com.google.android.material.card.MaterialCardView>
 
@@ -47,10 +49,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Usuario:"
-                android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold" />
-
 
         </LinearLayout>
     </LinearLayout>
@@ -85,14 +85,12 @@
                     android:layout_gravity="center" />
                 <!-- Botones de Acción -->
 
-
                 <Button
                     android:id="@+id/btnNueva"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Orden Nueva"
                     android:layout_marginTop="10dp"
-                    android:backgroundTint="@color/btnNueva"
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     android:elevation="4dp" />

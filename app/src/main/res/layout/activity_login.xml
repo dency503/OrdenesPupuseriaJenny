@@ -61,7 +61,6 @@
             android:fontFamily="@font/oswald"
             android:text="Usuario: "
             android:textAlignment="center"
-            android:textColor="@color/white"
             android:textSize="22dp" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -85,7 +84,6 @@
             android:fontFamily="@font/oswald"
             android:text="Contraseña: "
             android:textAlignment="center"
-            android:textColor="@color/white"
             android:textSize="22dp" />
 
         <com.google.android.material.textfield.TextInputLayout

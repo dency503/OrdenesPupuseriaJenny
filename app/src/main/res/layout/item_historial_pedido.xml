@@ -13,30 +13,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:text="Nombre del cliente" />
+        android:text="Nombre del cliente"
+        android:textColor="@color/black"/>
+
     <TextView
         android:id="@+id/nombreCliente"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Nombre del cliente"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:textColor="@color/black"/>
 
     <TextView
         android:id="@+id/fechaOrden"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Fecha de la orden" />
+        android:text="Fecha de la orden"
+        android:textColor="@color/black"/>
 
     <TextView
         android:id="@+id/tipoOrden"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tipo de la orden" />
+        android:text="Tipo de la orden"
+        android:textColor="@color/black"/>
 
     <TextView
         android:id="@+id/estadoOrden"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Estado de la orden" />
+        android:text="Estado de la orden"
+        android:textColor="@color/black"/>
 
 </LinearLayout>

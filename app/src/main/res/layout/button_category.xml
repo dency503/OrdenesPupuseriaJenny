@@ -7,15 +7,16 @@
     android:layout_height="wrap_content"
     android:padding="8dp">
 
-<Button
+    <Button
         android:id="@+id/btnCategory"
         android:layout_width="140dp"
         android:layout_height="140dp"
         android:layout_marginStart="16dp"
-        android:backgroundTint="@color/Gray"
+        android:backgroundTint="#71A5E8"
         android:text="Ordenes"
         android:textSize="16sp"
-    app:cornerRadius="20dp"
-    />
+        android:textColor="@color/black"
+        app:cornerRadius="20dp"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
