@@ -34,6 +34,7 @@ import com.pupuseriajenny.ordenes.utils.TokenUtil;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -108,7 +109,6 @@ private EditText edtComentario;
     private void crearOrden() {
         Orden orden = new Orden();
 
-
         try {
             // Convertir el texto a un entero
             int idMesa = Integer.parseInt(edtMesa.getText().toString());
@@ -118,7 +118,8 @@ private EditText edtComentario;
         } catch (NumberFormatException e) {
             // Manejo de error si el texto no es un número válido
             Toast.makeText(this, "Por favor ingresa un número válido para la mesa", Toast.LENGTH_SHORT).show();
-        } // Puede ser dinámico
+            return; // Salir del método si la conversión falla
+        }
 
         String nombreCliente = edtCliente.getText().toString();
 
@@ -128,7 +129,11 @@ private EditText edtComentario;
             return;
         }
         orden.setClienteOrden(nombreCliente);
-        orden.setFechaOrden(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+
+        // Configurar el formato de la fecha y hora
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+        String fechaFormateada = dateFormat.format(new Date());
+        orden.setFechaOrden(fechaFormateada);
 
         String tipoOrden = spnTipoOrden.getSelectedItem().toString();
         orden.setTipoOrden(tipoOrden);
@@ -152,6 +157,7 @@ private EditText edtComentario;
             }
         });
     }
+
 
     private void insertarDetallesVenta(int idOrden) {
         for (Producto producto : bebidasSeleccionadas) {

@@ -101,7 +101,6 @@ public class EditarOrdenActivity extends AppCompatActivity {
             }
         });
     }
-
     // Método para validar los campos
     private boolean validarCampos(String cliente, String fecha, String tipo, String estado) {
         if (cliente.isEmpty()) {
@@ -150,30 +149,28 @@ public class EditarOrdenActivity extends AppCompatActivity {
     // Método para actualizar la orden en la API
 
     private void showDatePickerDialog() {
-        // Obtener la fecha actual
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        // Crear el DatePickerDialog
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                 (view, selectedYear, selectedMonth, selectedDay) -> {
                     // Crear el objeto Calendar con la fecha seleccionada
                     Calendar selectedDate = Calendar.getInstance();
                     selectedDate.set(selectedYear, selectedMonth, selectedDay);
 
-                    // Formatear la fecha en el formato requerido: dd/MM/yyyy
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                    // Formatear la fecha en el formato requerido: dd/MM/yyyy HH:mm:ss
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
                     String fechaSeleccionada = sdf.format(selectedDate.getTime());
 
                     // Establecer la fecha en el EditText
                     edtFecha.setText(fechaSeleccionada);
                 }, year, month, day);
 
-        // Mostrar el DatePickerDialog
         datePickerDialog.show();
     }
+
     private void actualizarOrden(int idOrden, String cliente, String fecha, String tipo, String estado, String comentario) {
         // Crear el objeto Orden con los nuevos datos
         Orden ordenActualizada = new Orden();
