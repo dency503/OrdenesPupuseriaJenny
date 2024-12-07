@@ -128,7 +128,8 @@ private EditText edtComentario;
             return;
         }
         orden.setClienteOrden(nombreCliente);
-        orden.setFechaOrden(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        orden.setFechaOrden(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+
         String tipoOrden = spnTipoOrden.getSelectedItem().toString();
         orden.setTipoOrden(tipoOrden);
         orden.setEstadoOrden("Pendiente");

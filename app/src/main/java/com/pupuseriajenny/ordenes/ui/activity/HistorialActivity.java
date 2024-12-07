@@ -46,8 +46,7 @@ public class HistorialActivity extends AppCompatActivity implements HistorialAda
         // Verificar la expiración del token cuando la actividad se inicia
         authManager.verificarExpiracionDelToken();
         // Inicializar vistas
-        btnCerrar = findViewById(R.id.btnCerrar) ;
-        btnCerrar = findViewById(R.id.btnCerrar) ;
+
         tvUsuario = findViewById(R.id.tvUsuario);
         btnAgregar = findViewById(R.id.btnNueva);
         recyclerView = findViewById(R.id.recyclerViewHistorial);
@@ -70,9 +69,9 @@ public class HistorialActivity extends AppCompatActivity implements HistorialAda
             Intent intent = new Intent(HistorialActivity.this, HomeActivity.class);
             startActivity(intent);
         });
-        btnCerrar.setOnClickListener(view -> {
+     /*   btnCerrar.setOnClickListener(view -> {
 authManager.cerrarSesion();
-        });
+        });*/
     }
 
     // Método para obtener las órdenes desde la API
