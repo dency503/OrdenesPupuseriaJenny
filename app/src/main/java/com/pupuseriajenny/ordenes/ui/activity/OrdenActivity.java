@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.pupuseriajenny.ordenes.ApiService;
+import com.pupuseriajenny.ordenes.AuthManager.AuthManager;
 import com.pupuseriajenny.ordenes.R;
 import com.pupuseriajenny.ordenes.RetrofitClient;
 import com.pupuseriajenny.ordenes.data.model.DetallesVentas;
@@ -58,7 +59,11 @@ private EditText edtComentario;
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_orden);
+        // Crear instancia de AuthManager
+        AuthManager authManager = new AuthManager(this);
 
+        // Verificar la expiración del token cuando la actividad se inicia
+        authManager.verificarExpiracionDelToken();
         // Inicializar vistas
         spnTipoOrden = findViewById(R.id.spnTipoOrden);
         btnEnviar = findViewById(R.id.btnEnviar);
